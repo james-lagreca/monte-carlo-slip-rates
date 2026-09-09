@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dating the wrong event · Monte Carlo slip rates</title>
+<meta name="description" content="Offsets accumulate from marker formation but luminescence dates abandonment. What happens to an incremental slip-rate analysis when the two are paired.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/components.css">
+<link rel="stylesheet" href="./css/plots.css">
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <div class="eyebrow">Trap 2 · Formation against abandonment</div>
+  <h1>Dating the wrong event</h1>
+  <p class="lede">Every method on this site assumes that a marker's age and its offset refer to the same moment. Field geology does not always oblige. When it does not, the statistics cannot repair the damage, but they can tell you it has happened.</p>
+</header>
+
+<nav class="crumbs" aria-label="Sections">
+  <a href="./index.html">Start</a>
+  <a href="./m1-distributions.html">1 &middot; Distributions</a>
+  <a href="./m1-one-marker.html">2 &middot; One marker</a>
+  <a href="./m2-incremental.html">3 &middot; Incremental</a>
+  <a href="./m2-intervals.html">4 &middot; Reporting</a>
+  <a href="./t1-anchoring.html">5 &middot; Onset of offset</a>
+  <a href="./t2-mispairing.html" aria-current="page">6 &middot; Mispairing</a>
+  <a href="./references.html">References</a>
+  <a href="./verify.html">Verify</a>
+</nav>
+
+<main id="main">
+
+<h2>Two different moments</h2>
+
+<p>Consider a stream channel cut across a strike-slip fault. It is incised, it carries flow for some period, and eventually it is abandoned and its fill is preserved. Two things happen at two different times.</p>
+
+<ul>
+  <li><b>Offset accumulates from formation.</b> From the moment the channel is cut, every earthquake displaces it. The offset you restore in the field is the sum since incision.</li>
+  <li><b>Luminescence dates abandonment.</b> The sample you take comes from the fill, near the top, and it dates roughly when the channel stopped being an active watercourse.</li>
+</ul>
+
+<p>Between those two moments the channel was active, and during that active phase the fault kept slipping. Call the displacement accumulated in that window the <b>active-phase drift</b>. The marker's true position on the cumulative slip history is not where you plotted it: it sits above the history by that drift.</p>
+
+<div class="eq">
+  drift = rate × (t<sub>formation</sub> − t<sub>abandonment</sub>)
+  <span class="where">Pairing an offset measured from formation with an age measured at abandonment puts the marker above the true history by this amount.</span>
+</div>
+
+<h2>Why interval rates survive it better</h2>
+
+<p>For a single marker the drift goes straight into the rate as an over-estimate, because the numerator is too big and the denominator too small at the same time.</p>
+
+<p>For an interval between two markers the arithmetic is a difference divided by a difference. If both markers had similar active phases, most of the drift cancels, and only the difference between the two drifts survives. That is the quiet reason to prefer incremental analysis over per-marker rates, and it is a much stronger argument than the usual one about averaging.</p>
+
+<p>There is an exception worth knowing. An interval anchored at the most recent event does <em>not</em> get that cancellation, because the anchor is an earthquake and carries no drift of its own. Such an interval receives the neighbouring marker's error in full.</p>
+
+<h2>When it becomes visible</h2>
+
+<p>Usually a mispaired age just shifts a rate quietly. Occasionally it does something loud enough to catch. If one channel had a much longer active phase than its neighbours, the date on its fill can come out <em>younger</em> than the date on a channel carrying <em>less</em> offset. In displacement order, the ages then run backwards.</p>
+
+<p>Monotonicity now has to work very hard. The only realisations it can accept are the ones where the two ages happen to swap back within their uncertainties, and those are exactly the draws where the two ages are close together. The interval between them is squeezed towards zero duration, and its rate goes to infinity.</p>
+
+<div class="panel">
+  <h2>Move the mispaired age</h2>
+  <div class="sub">Four markers built from a true rate of 3.00 mm/yr. M3 has a long active phase, so the date on its fill is young. Slide it back towards its true formation age of 5.00 ka and watch the analysis recover.</div>
+
+  <div class="controls">
+    <div class="ctl">
+      <label for="age3">Dated age of M3 <b id="age3-val">2.90 ka</b></label>
+      <input type="range" id="age3" min="2.5" max="5.5" step="0.05" value="2.90">
+      <div class="hint">M2 is dated 3.30 ka. Its true formation age is 5.00 ka.</div>
+    </div>
+    <div class="ctl">
+      <label for="n">Accepted paths <b id="n-val">5,000</b></label>
+      <input type="range" id="n" min="0" max="2" step="1" value="1">
+      <div class="hint">1,000 · 5,000 · 10,000</div>
+    </div>
+    <div class="ctl">
+      <label for="seed">Seed</label>
+      <input type="text" id="seed" value="teaching" spellcheck="false">
+    </div>
+  </div>
+
+  <div class="checks">
+    <label><input type="checkbox" id="show-truth" checked> Show the true slip history</label>
+  </div>
+
+  <div class="readouts">
+    <div class="readout bad" id="ro-accept"><span class="k">Acceptance</span><span class="v">-</span></div>
+    <div class="readout" id="ro-predicted"><span class="k">Closed form</span><span class="v">-</span></div>
+    <div class="readout bad" id="ro-bad"><span class="k">M2 to M3 rate</span><span class="v">-</span></div>
+    <div class="readout" id="ro-best"><span class="k">Best-fit rate</span><span class="v">-</span></div>
+  </div>
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+</div>
+
+<div class="panel">
+  <h2>The path fan</h2>
+  <div class="sub">With the true history overlaid, so you can see the accepted paths refusing to follow it.</div>
+
+  <div class="poster">
+    <p style="font-size:14px;color:var(--ink-soft)">With M3 dated at 2.90 ka the acceptance rate collapses to about 17 per cent and the M2 to M3 interval returns a median of roughly 26 mm/yr against a true rate of 3.00. Re-dating M3 at its true formation age of 5.00 ka restores acceptance to essentially 100 per cent and the intervals to about 3 mm/yr. This figure is interactive when JavaScript is available.</p>
+  </div>
+
+  <figure class="live">
+    <canvas id="fan" width="900" height="420"></canvas>
+    <figcaption id="cap-fan"></figcaption>
+  </figure>
+</div>
+
+<div class="panel">
+  <h2>Acceptance against the dated age</h2>
+  <div class="sub">Computed across the whole slider range, so you can see where the cliff is.</div>
+  <figure class="live">
+    <canvas id="curve" width="900" height="300"></canvas>
+    <figcaption id="cap-curve"></figcaption>
+  </figure>
+</div>
+
+<h2>The acceptance rate is predictable</h2>
+
+<p>The collapse is not a mystery. It is dominated by a single pair of ages. Both are Gaussian, so the probability that they come out in the right order has a closed form:</p>
+
+<div class="eq">
+  P(t<sub>3</sub> &gt; t<sub>2</sub>) = Φ( (µ<sub>3</sub> − µ<sub>2</sub>) / √(σ<sub>2</sub>² + σ<sub>3</sub>²) )
+</div>
+
+<p>With M2 at 3.30 ± 0.30 ka and M3 at 2.90 ± 0.30 ka this evaluates to Φ(−0.943), which is 17.3 per cent. The observed acceptance rate on this page sits on that number. A student can check it with a normal table.</p>
+
+<p>That matters more than it looks. It means the acceptance rate is not an opaque property of the sampler. It is a statement about your data that you could have written down before running anything.</p>
+
+<div class="panel">
+  <h2>The interval rate, on a log axis</h2>
+  <div class="sub">A linear axis is useless here. The distribution runs over several orders of magnitude, and that is the result rather than a plotting problem.</div>
+  <figure class="live">
+    <canvas id="badpdf" width="900" height="300"></canvas>
+    <figcaption id="cap-badpdf"></figcaption>
+  </figure>
+  <details>
+    <summary>All interval rates as a table</summary>
+    <div class="body" id="interval-table"></div>
+  </details>
+</div>
+
+<h2>What to take from this</h2>
+
+<div class="callout warn">
+  <span class="tag">The diagnostic</span>
+  <p>A collapsed acceptance rate together with one physically absurd interval is the signature of a mispaired age. Neither symptom alone proves it. Together they should stop you from publishing the number and send you back to the geomorphology.</p>
+</div>
+
+<p>Notice what the arithmetic did and did not do. Every accepted path satisfies every constraint. The median is a perfectly good median of a perfectly good sample. The 68 per cent interval is correctly computed. And the answer is nonsense, because the question contained a false premise: that the age and the offset referred to the same moment.</p>
+
+<p>No amount of sampling fixes that. What sampling gives you is the acceptance rate, which is the one number that noticed.</p>
+
+<div class="callout key">
+  <span class="tag">In practice</span>
+  <p>Say what your age dates. If it dates abandonment and your offset accumulates from formation, say so, and either correct for the active phase or carry the mispairing as a stated bias with a sign. Reporting a rate without saying which event the age refers to leaves the reader unable to tell whether any of this applies.</p>
+</div>
+
+</main>
+
+<footer class="site">
+  <p>Monte Carlo slip rates, a teaching site by James La Greca, University of Melbourne.
+  The engine is checked against closed-form results on the <a href="./verify.html">verify page</a>.
+  Method provenance and reading are on the <a href="./references.html">references page</a>.</p>
+  <p><strong>Every teaching dataset on this site is synthetic.</strong>
+  Two presets carry digitised bracket values from published studies and are labelled as such.
+  No unpublished field measurement appears anywhere in this repository.</p>
+</footer>
+</div>
+
+<script type="module" src="./js/pages/t2-mispairing.js"></script>
+</body>
+</html>

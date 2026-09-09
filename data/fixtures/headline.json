@@ -1,0 +1,560 @@
+{
+  "generated": "run tools/make_fixtures.mjs to regenerate",
+  "seed": "teaching",
+  "nSingle": 200000,
+  "nPaths": 20000,
+  "single": {
+    "single-well-behaved": {
+      "median": 3,
+      "ci68": [
+        2.797,
+        3.217
+      ],
+      "ci95": [
+        2.627,
+        3.433
+      ],
+      "mean": 3.007,
+      "asymmetry": 1.068,
+      "hpd": [
+        2.778,
+        3.204
+      ],
+      "hpdClusters": 1,
+      "naive": {
+        "rate": 3,
+        "sigma": 0.206,
+        "lower": 2.794,
+        "upper": 3.206
+      },
+      "naiveUpperShortfall": 0.01,
+      "hpdNarrowerPct": -1.25
+    },
+    "single-poorly-dated": {
+      "median": 3,
+      "ci68": [
+        2.434,
+        3.88
+      ],
+      "ci95": [
+        2.051,
+        5.413
+      ],
+      "mean": 3.184,
+      "asymmetry": 1.556,
+      "hpd": [
+        2.197,
+        3.536
+      ],
+      "hpdClusters": 1,
+      "naive": {
+        "rate": 3,
+        "sigma": 0.69,
+        "lower": 2.31,
+        "upper": 3.69
+      },
+      "naiveUpperShortfall": 0.191,
+      "hpdNarrowerPct": 7.48
+    },
+    "single-two-restorations": {
+      "median": 2.999,
+      "ci68": [
+        2.604,
+        3.425
+      ],
+      "ci95": [
+        2.306,
+        3.833
+      ],
+      "mean": 3.016,
+      "asymmetry": 1.076,
+      "hpd": [
+        2.564,
+        3.383
+      ],
+      "hpdClusters": 1,
+      "naive": {
+        "rate": 3,
+        "sigma": 0.393,
+        "lower": 2.607,
+        "upper": 3.393
+      },
+      "naiveUpperShortfall": 0.031,
+      "hpdNarrowerPct": 0.2
+    },
+    "single-calibrated-14c": {
+      "median": 2.898,
+      "ci68": [
+        2.496,
+        3.482
+      ],
+      "ci95": [
+        2.318,
+        3.76
+      ],
+      "mean": 2.975,
+      "asymmetry": 1.454,
+      "hpd": [
+        2.368,
+        3.555
+      ],
+      "hpdClusters": 2,
+      "naive": {
+        "rate": 2.915,
+        "sigma": 0.432,
+        "lower": 2.482,
+        "upper": 3.347
+      },
+      "naiveUpperShortfall": 0.135,
+      "hpdNarrowerPct": -20.44
+    }
+  },
+  "multi": {
+    "multi-well-behaved": {
+      "acceptance": 100,
+      "accepted": 20000,
+      "attempts": 20000,
+      "bestFit": {
+        "median": 2.99,
+        "ci68": [
+          2.83,
+          3.17
+        ]
+      },
+      "intervals": [
+        {
+          "label": "MRE to M1",
+          "median": 3.01,
+          "ci68": [
+            2.58,
+            3.55
+          ],
+          "p975": 4.25,
+          "max": 6.34
+        },
+        {
+          "label": "M1 to M2",
+          "median": 3,
+          "ci68": [
+            2.46,
+            3.73
+          ],
+          "p975": 4.75,
+          "max": 9.7
+        },
+        {
+          "label": "M2 to M3",
+          "median": 2.99,
+          "ci68": [
+            2.32,
+            3.97
+          ],
+          "p975": 5.51,
+          "max": 14.06
+        },
+        {
+          "label": "M3 to M4",
+          "median": 3,
+          "ci68": [
+            2.37,
+            3.91
+          ],
+          "p975": 5.28,
+          "max": 15.85
+        }
+      ]
+    },
+    "multi-inconsistent": {
+      "acceptance": 39.746,
+      "accepted": 20000,
+      "attempts": 50320,
+      "bestFit": {
+        "median": 6.59,
+        "ci68": [
+          4.89,
+          9.52
+        ]
+      },
+      "intervals": [
+        {
+          "label": "M1 to M2",
+          "median": 6.45,
+          "ci68": [
+            3.25,
+            19.43
+          ],
+          "p975": 106.06,
+          "max": 56863.14
+        },
+        {
+          "label": "M2 to M3",
+          "median": 7.31,
+          "ci68": [
+            3.42,
+            22.57
+          ],
+          "p975": 141.28,
+          "max": 186041.71
+        },
+        {
+          "label": "M3 to M4",
+          "median": 9.33,
+          "ci68": [
+            4.56,
+            28.36
+          ],
+          "p975": 164.31,
+          "max": 432376.16
+        }
+      ]
+    },
+    "multi-mispaired": {
+      "acceptance": 17.431,
+      "accepted": 20000,
+      "attempts": 114736,
+      "bestFit": {
+        "median": 3.26,
+        "ci68": [
+          2.97,
+          3.59
+        ]
+      },
+      "intervals": [
+        {
+          "label": "M1 to M2",
+          "median": 3.68,
+          "ci68": [
+            2.93,
+            4.81
+          ],
+          "p975": 6.65,
+          "max": 57.01
+        },
+        {
+          "label": "M2 to M3",
+          "median": 25.92,
+          "ci68": [
+            10.78,
+            98.12
+          ],
+          "p975": 618.83,
+          "max": 177793.1
+        },
+        {
+          "label": "M3 to M4",
+          "median": 1.87,
+          "ci68": [
+            1.53,
+            2.26
+          ],
+          "p975": 2.69,
+          "max": 4.36
+        }
+      ]
+    },
+    "multi-mispaired-control": {
+      "acceptance": 99.995,
+      "accepted": 20000,
+      "attempts": 20001,
+      "bestFit": {
+        "median": 2.97,
+        "ci68": [
+          2.73,
+          3.24
+        ]
+      },
+      "intervals": [
+        {
+          "label": "M1 to M2",
+          "median": 3.03,
+          "ci68": [
+            2.42,
+            3.88
+          ],
+          "p975": 5.27,
+          "max": 12.36
+        },
+        {
+          "label": "M2 to M3",
+          "median": 2.7,
+          "ci68": [
+            1.99,
+            3.78
+          ],
+          "p975": 5.61,
+          "max": 79.28
+        },
+        {
+          "label": "M3 to M4",
+          "median": 3.26,
+          "ci68": [
+            2.51,
+            4.33
+          ],
+          "p975": 6.09,
+          "max": 21.48
+        }
+      ]
+    },
+    "published-gold-cowgill": {
+      "acceptance": 21.351,
+      "accepted": 20000,
+      "attempts": 93673,
+      "bestFit": {
+        "median": 5.34,
+        "ci68": [
+          4.53,
+          6.37
+        ]
+      },
+      "intervals": [
+        {
+          "label": "M1 to M2",
+          "median": 2.44,
+          "ci68": [
+            1.09,
+            8.77
+          ],
+          "p975": 57.71,
+          "max": 16449.89
+        },
+        {
+          "label": "M2 to M3",
+          "median": 3.95,
+          "ci68": [
+            1.83,
+            13.81
+          ],
+          "p975": 87.04,
+          "max": 51783.2
+        },
+        {
+          "label": "M3 to M4",
+          "median": 15.27,
+          "ci68": [
+            7.15,
+            54.84
+          ],
+          "p975": 368.18,
+          "max": 291816.55
+        },
+        {
+          "label": "M4 to M5",
+          "median": 3.8,
+          "ci68": [
+            1.94,
+            10.44
+          ],
+          "p975": 54.41,
+          "max": 29538.05
+        },
+        {
+          "label": "M5 to M6",
+          "median": 8.04,
+          "ci68": [
+            3.77,
+            25.48
+          ],
+          "p975": 166.9,
+          "max": 1135578.17
+        }
+      ]
+    },
+    "published-zinke-wairau": {
+      "acceptance": 20.39,
+      "accepted": 20000,
+      "attempts": 98087,
+      "bestFit": {
+        "median": 4.99,
+        "ci68": [
+          4.85,
+          5.14
+        ]
+      },
+      "intervals": [
+        {
+          "label": "M1 to M2",
+          "median": 10.49,
+          "ci68": [
+            8.65,
+            13.03
+          ],
+          "p975": 15.68,
+          "max": 19.55
+        },
+        {
+          "label": "M2 to M3",
+          "median": 5.85,
+          "ci68": [
+            3.67,
+            13.85
+          ],
+          "p975": 35.96,
+          "max": 1206.91
+        },
+        {
+          "label": "M3 to M4",
+          "median": 0.44,
+          "ci68": [
+            0.15,
+            0.79
+          ],
+          "p975": 1.19,
+          "max": 1.96
+        },
+        {
+          "label": "M4 to M5",
+          "median": 22.09,
+          "ci68": [
+            12.18,
+            59.89
+          ],
+          "p975": 333.53,
+          "max": 272084.78
+        },
+        {
+          "label": "M5 to M6",
+          "median": 2.23,
+          "ci68": [
+            0.63,
+            6.92
+          ],
+          "p975": 36.22,
+          "max": 44789.4
+        },
+        {
+          "label": "M6 to M7",
+          "median": 20.54,
+          "ci68": [
+            11.53,
+            56.36
+          ],
+          "p975": 304.55,
+          "max": 282602.15
+        },
+        {
+          "label": "M7 to M8",
+          "median": 3.45,
+          "ci68": [
+            1.33,
+            9.13
+          ],
+          "p975": 45.52,
+          "max": 9615.73
+        },
+        {
+          "label": "M8 to M9",
+          "median": 4.71,
+          "ci68": [
+            2.39,
+            12.07
+          ],
+          "p975": 62.41,
+          "max": 9024.66
+        }
+      ]
+    }
+  },
+  "anchoring": {
+    "anchorAge": 0.4,
+    "trueRate": 3,
+    "rows": [
+      {
+        "marker": "M1",
+        "age": 1.6,
+        "unanchored": {
+          "median": 2.25,
+          "ci68": [
+            2.01,
+            2.53
+          ]
+        },
+        "anchored": {
+          "median": 3,
+          "ci68": [
+            2.58,
+            3.55
+          ]
+        },
+        "biasPct": -24.97,
+        "closedForm": 0.75,
+        "widthUnanchored": 0.51,
+        "widthAnchored": 0.97
+      },
+      {
+        "marker": "M2",
+        "age": 3.1,
+        "unanchored": {
+          "median": 2.61,
+          "ci68": [
+            2.39,
+            2.86
+          ]
+        },
+        "anchored": {
+          "median": 3,
+          "ci68": [
+            2.71,
+            3.33
+          ]
+        },
+        "biasPct": -12.9,
+        "closedForm": 0.871,
+        "widthUnanchored": 0.46,
+        "widthAnchored": 0.62
+      },
+      {
+        "marker": "M3",
+        "age": 4.8,
+        "unanchored": {
+          "median": 2.75,
+          "ci68": [
+            2.55,
+            2.98
+          ]
+        },
+        "anchored": {
+          "median": 3,
+          "ci68": [
+            2.76,
+            3.27
+          ]
+        },
+        "biasPct": -8.33,
+        "closedForm": 0.917,
+        "widthUnanchored": 0.43,
+        "widthAnchored": 0.51
+      },
+      {
+        "marker": "M4",
+        "age": 7.4,
+        "unanchored": {
+          "median": 2.84,
+          "ci68": [
+            2.64,
+            3.06
+          ]
+        },
+        "anchored": {
+          "median": 3,
+          "ci68": [
+            2.78,
+            3.24
+          ]
+        },
+        "biasPct": -5.39,
+        "closedForm": 0.946,
+        "widthUnanchored": 0.42,
+        "widthAnchored": 0.46
+      }
+    ]
+  },
+  "extras": {
+    "mispairPrediction": {
+      "z": -0.943,
+      "predictedPct": 17.29,
+      "observedPct": 17.431,
+      "formula": "Phi((mu3 - mu2) / sqrt(sigma2^2 + sigma3^2))"
+    }
+  }
+}

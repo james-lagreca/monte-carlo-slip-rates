@@ -1,0 +1,89 @@
+{
+  "id": "multi-well-behaved",
+  "kind": "multi",
+  "synthetic": true,
+  "title": "Four markers that agree",
+  "teaches": "Every realisation satisfies monotonicity, so acceptance is 100 per cent and every interval recovers the rate the data were built from.",
+  "provenance": "Invented for teaching. Not a real site and not real measurements.",
+  "units": {
+    "age": "ka",
+    "displacement": "m",
+    "rate": "mm/yr"
+  },
+  "truth": {
+    "slipRate": 3,
+    "onset": 0.4,
+    "note": "Offsets are exactly 3.0 x (t - 0.40)."
+  },
+  "anchor": {
+    "id": "mre",
+    "label": "MRE",
+    "age": {
+      "type": "boxcar",
+      "min": 0.25,
+      "max": 0.55
+    }
+  },
+  "markers": [
+    {
+      "id": "m1",
+      "label": "M1",
+      "displacement": {
+        "type": "pert",
+        "min": 3,
+        "mode": 3.6,
+        "max": 4.2
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 1.6,
+        "sd": 0.15
+      }
+    },
+    {
+      "id": "m2",
+      "label": "M2",
+      "displacement": {
+        "type": "pert",
+        "min": 7,
+        "mode": 8.1,
+        "max": 9.2
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 3.1,
+        "sd": 0.22
+      }
+    },
+    {
+      "id": "m3",
+      "label": "M3",
+      "displacement": {
+        "type": "pert",
+        "min": 11.6,
+        "mode": 13.2,
+        "max": 14.8
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 4.8,
+        "sd": 0.3
+      }
+    },
+    {
+      "id": "m4",
+      "label": "M4",
+      "displacement": {
+        "type": "pert",
+        "min": 18.8,
+        "mode": 21,
+        "max": 23.2
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 7.4,
+        "sd": 0.45
+      }
+    }
+  ]
+}

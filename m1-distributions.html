@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distributions · Monte Carlo slip rates</title>
+<meta name="description" content="The distribution shapes used in slip-rate work: Gaussian, boxcar, triangular, trapezoidal, Beta-PERT and empirical, and what each one claims about your knowledge.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/components.css">
+<link rel="stylesheet" href="./css/plots.css">
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <div class="eyebrow">Method 1 · The vocabulary</div>
+  <h1>Choosing a distribution is a scientific claim</h1>
+  <p class="lede">Before you can divide two distributions you have to decide what they are. Each shape below says something specific about what you know, and picking one because it is familiar rather than because it is true will quietly bias everything downstream.</p>
+</header>
+
+<nav class="crumbs" aria-label="Sections">
+  <a href="./index.html">Start</a>
+  <a href="./m1-distributions.html" aria-current="page">1 &middot; Distributions</a>
+  <a href="./m1-one-marker.html">2 &middot; One marker</a>
+  <a href="./m2-incremental.html">3 &middot; Incremental</a>
+  <a href="./m2-intervals.html">4 &middot; Reporting</a>
+  <a href="./t1-anchoring.html">5 &middot; Onset of offset</a>
+  <a href="./t2-mispairing.html">6 &middot; Mispairing</a>
+  <a href="./references.html">References</a>
+  <a href="./verify.html">Verify</a>
+</nav>
+
+<main id="main">
+
+<p>These are the shapes built by RISeR's <code>makePDF.py</code>, plus the Beta-PERT that field offset estimates usually imply. Everything on this site is sampled by inverse transform, so any shape you can describe as a curve you can sample from.</p>
+
+<div class="panel">
+  <h2>Build one</h2>
+  <div class="sub">Change the shape and its parameters. The upper plot is the density, the lower one the cumulative distribution that inverse-transform sampling actually uses.</div>
+
+  <div class="controls">
+    <div class="ctl">
+      <label for="type">Shape</label>
+      <select id="type">
+        <option value="gauss">Gaussian: a measurement with symmetric error</option>
+        <option value="boxcar">Boxcar: bracketing constraints only</option>
+        <option value="triangular">Triangular: a preferred value between hard bounds</option>
+        <option value="trapezoid">Trapezoid: two defensible restorations</option>
+        <option value="pert" selected>Beta-PERT: minimum, preferred, maximum</option>
+      </select>
+    </div>
+    <div class="ctl" id="wrap-p1">
+      <label for="p1"><span id="lab-p1">Minimum</span> <b id="val-p1">-</b></label>
+      <input type="range" id="p1" min="0" max="20" step="0.1" value="10.5">
+    </div>
+    <div class="ctl" id="wrap-p2">
+      <label for="p2"><span id="lab-p2">Mode</span> <b id="val-p2">-</b></label>
+      <input type="range" id="p2" min="0" max="20" step="0.1" value="12">
+    </div>
+    <div class="ctl" id="wrap-p3">
+      <label for="p3"><span id="lab-p3">Maximum</span> <b id="val-p3">-</b></label>
+      <input type="range" id="p3" min="0" max="20" step="0.1" value="13.5">
+    </div>
+    <div class="ctl" id="wrap-p4">
+      <label for="p4"><span id="lab-p4">Upper shoulder</span> <b id="val-p4">-</b></label>
+      <input type="range" id="p4" min="0" max="20" step="0.1" value="14">
+    </div>
+  </div>
+
+  <div class="checks">
+    <label><input type="checkbox" id="show-draws" checked> Overlay a histogram of actual draws</label>
+  </div>
+
+  <div class="figrow">
+    <figure>
+      <canvas id="pdf" width="440" height="230"></canvas>
+      <figcaption>Probability density, with sampled draws overlaid.</figcaption>
+    </figure>
+    <figure>
+      <canvas id="cdf" width="440" height="230"></canvas>
+      <figcaption>Cumulative distribution. Sampling means picking a height at random and reading across.</figcaption>
+    </figure>
+  </div>
+
+  <div class="readouts">
+    <div class="readout" id="ro-label"><span class="k">Specification</span><span class="v">-</span></div>
+    <div class="readout" id="ro-mean"><span class="k">Mean</span><span class="v">-</span></div>
+    <div class="readout" id="ro-sd"><span class="k">Std deviation</span><span class="v">-</span></div>
+    <div class="readout" id="ro-support"><span class="k">Support</span><span class="v">-</span></div>
+  </div>
+  <div id="warnings"></div>
+</div>
+
+<h2>What each shape claims</h2>
+
+<h3>Gaussian</h3>
+<p>Says the value is a measurement with symmetric error and no hard bounds. Right for a luminescence age, and for most laboratory quantities. Note that this site builds Gaussians on a support of plus or minus four standard deviations, matching RISeR, rather than an infinite one.</p>
+<p>The hazard: a Gaussian has tails, and if the lower tail of an age reaches zero then the slip rate it produces is unbounded. The tool warns you when that happens. It is not a rounding problem, it is the model saying the marker might be zero years old.</p>
+
+<h3>Boxcar</h3>
+<p>Says the value lies between two bounds and you have no basis for preferring anything inside them. This is the honest choice when your constraint is stratigraphic bracketing: a unit sits above one dated horizon and below another, and nothing more is known. Both published datasets on this site arrive as boxcars, because that is the form bracketing constraints take.</p>
+<p>It is easy to feel that a boxcar throws away information. It does the opposite: choosing a peaked shape instead would add information you do not have.</p>
+
+<h3>Triangular</h3>
+<p>Says there is a preferred value and two hard bounds, and the density falls linearly to zero at each. Simple, and the mean is just the average of the three numbers.</p>
+
+<h3>Trapezoid</h3>
+<p>The shape for a specific and common situation: two restorations of an offset are both defensible and you cannot choose between them. Put the flat top across both, and the falling limbs out to the extreme bounds. The plateau says these are equally likely; the limbs say values beyond are progressively less plausible.</p>
+<p>This is a genuinely useful move, because the alternative is to pick one restoration and pretend the other never occurred to you.</p>
+
+<h3>Beta-PERT</h3>
+<p>What a field geologist usually means by minimum, preferred and maximum. Bounded like a triangle but smooth, and it takes the preferred value more seriously than a triangle does. Its shape parameters are</p>
+
+<div class="eq">
+  α = 1 + 4(mode − min)/(max − min) &nbsp;&nbsp;&nbsp; β = 1 + 4(max − mode)/(max − min)
+  <span class="where">The 4 is the standard PERT shape constant, which means α + β = 6 for every PERT, whatever the numbers.</span>
+</div>
+
+<p>Its moments are closed form, which makes it easy to check a sampler against:</p>
+
+<div class="eq">
+  µ = (min + 4·mode + max) / 6 &nbsp;&nbsp;&nbsp; σ = √( (µ − min)(max − µ) / 7 )
+</div>
+
+<h3>Empirical</h3>
+<p>A table of value and probability pairs. This is how a calibrated radiocarbon age arrives from OxCal, and it is the format RISeR writes. The curve is treated as piecewise linear and sampled by inverting its cumulative distribution exactly. Loading one of these is how you would put a real age onto this site.</p>
+<p>Calibrated ages are frequently not unimodal. A calibration plateau can split an age into two peaks, the rate inherits the split, and a single confidence interval will paper over it. The <a href="./m2-intervals.html">reporting page</a> is about what to do instead.</p>
+
+<h2>Does shape matter once the moments are fixed?</h2>
+
+<p>It is tempting to think that once you have fixed a mean and a standard deviation, the shape is a detail. Below, a trapezoid and a Gaussian are matched on both, then both are divided by the same age.</p>
+
+<p>The answer is worth being precise about, because it is easy to overstate. For these two shapes the medians agree to three decimal places and the 68 per cent intervals differ by a few per cent in width. That is a small effect, and if it were the whole story you could reasonably ignore it.</p>
+
+<p>It is not the whole story, for two reasons. The bounded shape has hard limits and the Gaussian does not, so they diverge in the tails rather than in the middle, and it is the tails that matter when you divide. And the shapes that genuinely change an answer are the ones whose moments do <em>not</em> match a Gaussian's: a boxcar where you assumed a peak, or a bimodal calibrated age summarised as a mean and a sigma. Those are not small effects at all.</p>
+
+<div class="panel">
+  <h2>Matched mean and standard deviation</h2>
+  <div class="sub">Both displacement distributions have the same mean and the same standard deviation. Only the shape differs.</div>
+
+  <div class="poster">
+    <p style="font-size:14px;color:var(--ink-soft)">The two distributions are matched on mean and standard deviation, yet the rate intervals they produce are not identical. This comparison is generated live when JavaScript is available.</p>
+  </div>
+
+  <figure class="live">
+    <canvas id="compare" width="900" height="300"></canvas>
+    <figcaption id="cap-compare"></figcaption>
+  </figure>
+  <div id="compare-table"></div>
+</div>
+
+<div class="callout key">
+  <span class="tag">Rule of thumb</span>
+  <p>Pick the shape that describes how you actually know the number. Bracketing constraints give a boxcar. A laboratory measurement gives a Gaussian. A field restoration with a preferred value gives a PERT or a triangle. Two competing restorations give a trapezoid. A calibrated age gives whatever the calibration produced, and you should carry it rather than summarising it as a mean and a sigma.</p>
+</div>
+
+</main>
+
+<footer class="site">
+  <p>Monte Carlo slip rates, a teaching site by James La Greca, University of Melbourne.
+  The engine is checked against closed-form results on the <a href="./verify.html">verify page</a>.
+  Method provenance and reading are on the <a href="./references.html">references page</a>.</p>
+  <p><strong>Every teaching dataset on this site is synthetic.</strong>
+  Two presets carry digitised bracket values from published studies and are labelled as such.
+  No unpublished field measurement appears anywhere in this repository.</p>
+</footer>
+</div>
+
+<script type="module" src="./js/pages/m1-distributions.js"></script>
+</body>
+</html>

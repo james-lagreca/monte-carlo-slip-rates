@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>References and provenance · Monte Carlo slip rates</title>
+<meta name="description" content="Method provenance, data provenance and further reading for the Monte Carlo slip rates teaching site.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/components.css">
+<link rel="stylesheet" href="./css/plots.css">
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <div class="eyebrow">Provenance</div>
+  <h1>References and where everything came from</h1>
+  <p class="lede">What the methods are, who developed them, and exactly what the data on this site is and is not.</p>
+</header>
+
+<nav class="crumbs" aria-label="Sections">
+  <a href="./index.html">Start</a>
+  <a href="./m1-distributions.html">1 &middot; Distributions</a>
+  <a href="./m1-one-marker.html">2 &middot; One marker</a>
+  <a href="./m2-incremental.html">3 &middot; Incremental</a>
+  <a href="./m2-intervals.html">4 &middot; Reporting</a>
+  <a href="./t1-anchoring.html">5 &middot; Onset of offset</a>
+  <a href="./t2-mispairing.html">6 &middot; Mispairing</a>
+  <a href="./references.html" aria-current="page">References</a>
+  <a href="./verify.html">Verify</a>
+</nav>
+
+<main id="main">
+
+<h2>Data statement</h2>
+
+<div class="callout warn">
+  <span class="tag">Read this before reusing anything</span>
+  <p><strong>The teaching datasets on this site are synthetic.</strong> They were invented to isolate one teaching point each, and most are forward-modelled from a stated slip rate so that an estimator can be checked against the answer it should recover. They are not field sites. The marker labels M1 to M4 do not correspond to anything real.</p>
+  <p>Two presets are different, and are labelled <span class="badge published">published brackets</span> in the interface. Those carry displacement and age bracket values from published studies. See the section below for what they are and what the recomputed numbers on this site do and do not represent.</p>
+  <p>No unpublished field measurement appears anywhere in this repository.</p>
+</div>
+
+<h2>Method provenance</h2>
+
+<h3>Incremental slip rates by rejection sampling</h3>
+
+<p>The accept-and-reject scheme on the <a href="./m2-incremental.html">incremental page</a> is not original here. It builds on Gold and Cowgill (2011) and was developed in the form used on this site by Robert Zinke and colleagues. The JavaScript engine is a port of the algorithm implemented in Zinke's RISeR toolbox, and was checked against it.</p>
+
+<ul>
+  <li>Gold, R. D. and Cowgill, E. (2011). <i>Earth and Planetary Science Letters</i>. Cited by the RISeR documentation as the source of the method this code builds on. <span style="color:var(--ink-soft)">Full title, volume and DOI should be completed from the paper before this page is used as a citation source.</span></li>
+  <li>Zinke, R., Dolan, J. F., Rhodes, E. J., Van Dissen, R. and McGuire, C. P. (2017). Highly Variable Latest Pleistocene-Holocene Incremental Slip Rates on the Awatere Fault at Saxton River, South Island, New Zealand, Revealed by Lidar Mapping and Luminescence Dating. <i>Geophysical Research Letters</i> 44. <a href="https://doi.org/10.1002/2017GL075048">doi:10.1002/2017GL075048</a></li>
+  <li>Zinke, R., Dolan, J. F., Rhodes, E. J., Van Dissen, R., McGuire, C. P., Hatem, A. E., Brown, N. D. and Langridge, R. M. (2019). Multimillennial Incremental Slip Rate Variability of the Clarence Fault at the Tophouse Road Site, Marlborough Fault System, New Zealand. <i>Geophysical Research Letters</i> 46. <a href="https://doi.org/10.1029/2018GL080688">doi:10.1029/2018GL080688</a></li>
+  <li>Zinke, R. and others (2021). Latest Pleistocene to Holocene Incremental Slip Rates of the Wairau Fault: Implications for Long-Distance and Long-Term Coordination of Faulting Between North and South Island, New Zealand. <i>Tectonics</i>.</li>
+</ul>
+
+<p><b>RISeR</b>, the Rejection sampling for Incremental Slip Rate calculator, is by Robert Zinke (2019 to 2021). Its documentation asks that anyone using it cite Zinke and others (2017, 2019). This site is an independent reimplementation for teaching rather than a redistribution, but the intellectual debt is the same and the citation request applies just as much.</p>
+
+<p>RISeR also computes a single-marker slip rate by dividing one probability density by another using a weighted convolution, following Bird (2007, equations A7 and A8), rather than by sampling. That is an exact alternative to the Monte Carlo route taken on the <a href="./m1-one-marker.html">Method 1 page</a> and it is worth knowing about.</p>
+
+<h3>Onset of offset</h3>
+
+<ul>
+  <li>Hatem, A. E. and others (2024). How Does the Onset of Offset Influence Geologic Slip Rates? This is the source for the anchoring correction used on the <a href="./t1-anchoring.html">onset of offset page</a>.</li>
+</ul>
+
+<h3>Earthquake-cycle variability in measured rates</h3>
+
+<ul>
+  <li>Styron, R. (2019). <i>Solid Earth</i> 10, 15 to 25. On how earthquake cycle variability affects neotectonic and paleoseismic slip rate estimates. Relevant background for why a rate depends on the window it was measured over, a topic this site deliberately does not cover.</li>
+</ul>
+
+<h2>The two published presets</h2>
+
+<p>Both arrive as minimum and maximum brackets on displacement and age, digitised from the source studies, and are loaded here as uniform distributions because that is the shape a bracketing constraint implies.</p>
+
+<table>
+  <thead><tr><th>Preset</th><th class="n">Markers</th><th>Source</th></tr></thead>
+  <tbody>
+    <tr><td>Gold and Cowgill (2011)</td><td class="n">6</td><td>Bracket values after Gold and Cowgill (2011), EPSL.</td></tr>
+    <tr><td>Zinke and others (2021), Wairau Fault</td><td class="n">9</td><td>Bracket values after Zinke and others (2021), Tectonics, for the Wairau Fault, Aotearoa New Zealand.</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <span class="tag">What the recomputed numbers are not</span>
+  <p>The published analyses used fuller probability density shapes than the uniform brackets used here, and made site-specific choices this site does not reproduce. <strong>The rates this site computes from those presets are illustrative recomputations, not reproductions of the published results.</strong> Do not cite a number from this website as though it came from those papers. Go to the papers.</p>
+</div>
+
+<h2>How to put real data on this site</h2>
+
+<p>The preset format is documented in <code>docs/DATA-FORMAT.md</code> in the repository. Replace the <code>markers</code> array and nothing else changes. An age can be given as a distribution specification, or as an empirical table of value and probability pairs, which is the same two-column format RISeR's <code>makePDF.py</code> writes. Calibrated ages exported from OxCal and converted with RISeR's <code>calyr2age.py</code> load without modification.</p>
+
+<h2>Verification</h2>
+
+<p>The engine is checked against closed-form results rather than against a second numerical library. The four load-bearing checks and their measured agreement are listed on the <a href="./verify.html">verify page</a>, which runs them live. In a terminal the same checks run with <code>node tools/verify.js</code>.</p>
+
+<h2>About</h2>
+
+<p>Built by James La Greca, School of Geography, Earth and Atmospheric Sciences, University of Melbourne, as methods training material for postgraduate and early-career researchers working on geologic slip rates.</p>
+
+<p>The code is a from-scratch JavaScript implementation with no dependencies and no build step. Every file served is a file in the repository, so the source you read is the source that ran.</p>
+
+</main>
+
+<footer class="site">
+  <p>Monte Carlo slip rates, a teaching site by James La Greca, University of Melbourne.
+  The engine is checked against closed-form results on the <a href="./verify.html">verify page</a>.
+  Method provenance and reading are on the <a href="./references.html">references page</a>.</p>
+  <p><strong>Every teaching dataset on this site is synthetic.</strong>
+  Two presets carry digitised bracket values from published studies and are labelled as such.
+  No unpublished field measurement appears anywhere in this repository.</p>
+</footer>
+</div>
+
+</body>
+</html>

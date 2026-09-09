@@ -1,0 +1,72 @@
+[
+  {
+    "id": "single-well-behaved",
+    "kind": "single",
+    "title": "A well-dated marker",
+    "teaches": "With a tightly constrained age, Monte Carlo and naive error propagation agree.",
+    "synthetic": true
+  },
+  {
+    "id": "single-poorly-dated",
+    "kind": "single",
+    "title": "The same marker, a worse age",
+    "teaches": "Identical displacement, age sigma raised from 0.20 to 0.90 ka. The rate grows a long right tail and the naive interval stops being usable.",
+    "synthetic": true
+  },
+  {
+    "id": "single-two-restorations",
+    "kind": "single",
+    "title": "Two defensible restorations",
+    "teaches": "When two reconstructions are equally valid, the honest displacement PDF is a trapezoid whose flat top spans both.",
+    "synthetic": true
+  },
+  {
+    "id": "single-calibrated-14c",
+    "kind": "single",
+    "title": "A bimodal calibrated age",
+    "teaches": "Calibration wiggles routinely split an age into two plateaux. The rate inherits the split, and a single interval hides it. This is what HPD clusters are for.",
+    "synthetic": true
+  },
+  {
+    "id": "multi-well-behaved",
+    "kind": "multi",
+    "title": "Four markers that agree",
+    "teaches": "Every realisation satisfies monotonicity, so acceptance is 100 per cent and every interval recovers the rate the data were built from.",
+    "synthetic": true
+  },
+  {
+    "id": "multi-inconsistent",
+    "kind": "multi",
+    "title": "Markers that overlap each other",
+    "teaches": "Ages spaced too closely relative to their errors. Acceptance falls, and the interval rates come back too wide to say anything with.",
+    "synthetic": true
+  },
+  {
+    "id": "multi-mispaired",
+    "kind": "multi",
+    "title": "One mispaired age",
+    "teaches": "M3 had a long active phase, so the date on its fill is younger than M2 even though it carries more offset. Acceptance collapses and one interval rate explodes.",
+    "synthetic": true
+  },
+  {
+    "id": "multi-mispaired-control",
+    "kind": "multi",
+    "title": "The same markers, correctly paired",
+    "teaches": "Identical to multi-mispaired except M3 carries its true formation age of 5.00 ka. Everything relaxes.",
+    "synthetic": true
+  },
+  {
+    "id": "published-gold-cowgill",
+    "kind": "multi",
+    "title": "Gold and Cowgill (2011), six markers",
+    "teaches": "Real bracketing constraints, heavily overlapping in age. This is the case rejection sampling was designed for: about a fifth of realisations survive.",
+    "synthetic": false
+  },
+  {
+    "id": "published-zinke-wairau",
+    "kind": "multi",
+    "title": "Zinke and others (2021), Wairau Fault, nine markers",
+    "teaches": "Nine dated markers on one fault. The interval rates vary by more than an order of magnitude, which is the phenomenon incremental analysis exists to measure.",
+    "synthetic": false
+  }
+]

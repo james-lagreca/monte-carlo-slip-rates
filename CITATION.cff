@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+title: "Monte Carlo slip rates: an interactive teaching site"
+message: "If you use this teaching material, please cite it. If you use the incremental slip-rate method itself, cite Zinke et al. (2017, 2019) as the RISeR documentation asks."
+type: software
+authors:
+  - family-names: "La Greca"
+    given-names: "James"
+    affiliation: "School of Geography, Earth and Atmospheric Sciences, University of Melbourne"
+repository-code: "https://github.com/james-lagreca/monte-carlo-slip-rates"
+url: "https://james-lagreca.github.io/monte-carlo-slip-rates/"
+abstract: >-
+  An interactive, dependency-free teaching site on Monte Carlo and incremental
+  fault slip-rate estimation. Covers distribution choice, single-marker rate
+  distributions, rejection sampling under a monotonicity condition, percentile
+  against highest posterior density reporting, onset-of-offset anchoring, and
+  the effect of pairing an offset with an age that dates a different event.
+  All teaching datasets are synthetic.
+keywords:
+  - slip rate
+  - Monte Carlo
+  - incremental slip rate
+  - paleoseismology
+  - tectonic geomorphology
+  - teaching
+license: MIT

@@ -1,0 +1,101 @@
+{
+  "id": "published-gold-cowgill",
+  "kind": "multi",
+  "synthetic": false,
+  "title": "Gold and Cowgill (2011), six markers",
+  "teaches": "Real bracketing constraints, heavily overlapping in age. This is the case rejection sampling was designed for: about a fifth of realisations survive.",
+  "provenance": "Displacement and age brackets after Gold and Cowgill (2011), Earth and Planetary Science Letters. Digitised as minimum and maximum bounds and loaded here as uniform PDFs. The published analysis used fuller PDF shapes, so the rates computed on this page are illustrative recomputations, not reproductions of the published values.",
+  "units": {
+    "age": "ka",
+    "displacement": "m",
+    "rate": "mm/yr"
+  },
+  "truth": null,
+  "anchor": null,
+  "markers": [
+    {
+      "id": "m1",
+      "label": "M1",
+      "displacement": {
+        "type": "boxcar",
+        "min": 5.5,
+        "max": 7.1
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 1.06,
+        "max": 3
+      }
+    },
+    {
+      "id": "m2",
+      "label": "M2",
+      "displacement": {
+        "type": "boxcar",
+        "min": 8,
+        "max": 10.5
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 1.06,
+        "max": 6
+      }
+    },
+    {
+      "id": "m3",
+      "label": "M3",
+      "displacement": {
+        "type": "boxcar",
+        "min": 12.9,
+        "max": 15.5
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 2,
+        "max": 7.4
+      }
+    },
+    {
+      "id": "m4",
+      "label": "M4",
+      "displacement": {
+        "type": "boxcar",
+        "min": 29,
+        "max": 36
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 3.92,
+        "max": 7.4
+      }
+    },
+    {
+      "id": "m5",
+      "label": "M5",
+      "displacement": {
+        "type": "boxcar",
+        "min": 40,
+        "max": 58
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 6,
+        "max": 16
+      }
+    },
+    {
+      "id": "m6",
+      "label": "M6",
+      "displacement": {
+        "type": "boxcar",
+        "min": 60,
+        "max": 102
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 13,
+        "max": 16
+      }
+    }
+  ]
+}

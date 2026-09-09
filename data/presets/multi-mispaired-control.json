@@ -1,0 +1,81 @@
+{
+  "id": "multi-mispaired-control",
+  "kind": "multi",
+  "synthetic": true,
+  "title": "The same markers, correctly paired",
+  "teaches": "Identical to multi-mispaired except M3 carries its true formation age of 5.00 ka. Everything relaxes.",
+  "provenance": "Invented for teaching. Not a real site and not real measurements.",
+  "units": {
+    "age": "ka",
+    "displacement": "m",
+    "rate": "mm/yr"
+  },
+  "truth": {
+    "slipRate": 3,
+    "onset": 0,
+    "note": "The control for multi-mispaired."
+  },
+  "anchor": null,
+  "markers": [
+    {
+      "id": "m1",
+      "label": "M1",
+      "displacement": {
+        "type": "pert",
+        "min": 4.4,
+        "mode": 5.1,
+        "max": 5.8
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 1.55,
+        "sd": 0.2
+      }
+    },
+    {
+      "id": "m2",
+      "label": "M2",
+      "displacement": {
+        "type": "pert",
+        "min": 9,
+        "mode": 10.4,
+        "max": 11.8
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 3.3,
+        "sd": 0.3
+      }
+    },
+    {
+      "id": "m3",
+      "label": "M3",
+      "displacement": {
+        "type": "pert",
+        "min": 13.2,
+        "mode": 15,
+        "max": 16.8
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 5,
+        "sd": 0.3
+      }
+    },
+    {
+      "id": "m4",
+      "label": "M4",
+      "displacement": {
+        "type": "pert",
+        "min": 20.4,
+        "mode": 22.8,
+        "max": 25.2
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 7.4,
+        "sd": 0.45
+      }
+    }
+  ]
+}

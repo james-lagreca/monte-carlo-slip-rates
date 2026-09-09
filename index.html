@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monte Carlo slip rates</title>
+<meta name="description" content="An interactive introduction to Monte Carlo and incremental fault slip-rate estimation, for postgraduate methods training.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/components.css">
+<link rel="stylesheet" href="./css/plots.css">
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <div class="eyebrow">Teaching site · Earthquake geology</div>
+  <h1>Monte Carlo slip rates</h1>
+  <p class="lede">You have one offset marker and one date. What is the slip rate, and how wrong could it be? This site works through the two Monte Carlo methods that answer that question, and the field-geology traps that make both of them lie to you.</p>
+</header>
+
+<nav class="crumbs" aria-label="Sections">
+  <a href="./index.html" aria-current="page">Start</a>
+  <a href="./m1-distributions.html">1 &middot; Distributions</a>
+  <a href="./m1-one-marker.html">2 &middot; One marker</a>
+  <a href="./m2-incremental.html">3 &middot; Incremental</a>
+  <a href="./m2-intervals.html">4 &middot; Reporting</a>
+  <a href="./t1-anchoring.html">5 &middot; Onset of offset</a>
+  <a href="./t2-mispairing.html">6 &middot; Mispairing</a>
+  <a href="./references.html">References</a>
+  <a href="./verify.html">Verify</a>
+</nav>
+
+<main id="main">
+
+<p>A geologic slip rate is a displacement divided by a time. Neither number is known exactly. The displacement is a restoration with a preferred value and defensible bounds; the age is a laboratory measurement with its own distribution, and if it is a calibrated radiocarbon date it may not even be unimodal.</p>
+
+<p>Dividing one distribution by another is not the same as dividing two numbers and carrying an error bar along. It is the difference between a result you can defend and one that is quietly wrong in a known direction.</p>
+
+<div class="callout key">
+  <span class="tag">Units, stated once</span>
+  <p>Ages are in <b>ka</b>, displacements in <b>m</b>, rates in <b>mm/yr</b>. One metre per thousand years is one millimetre per year exactly, so metres divided by ka is <em>already</em> mm/yr. There is no unit conversion anywhere on this site, and that is not an oversight.</p>
+</div>
+
+<h2>The two methods</h2>
+
+<div class="cards">
+  <a class="card" href="./m1-one-marker.html">
+    <span class="step">Method 1</span>
+    <h2>One dated marker</h2>
+    <p>Sample a displacement, sample an age, divide, repeat. The result is a rate distribution, and it is skewed. Why plus-or-minus fails, and what to report instead.</p>
+  </a>
+  <a class="card" href="./m2-incremental.html">
+    <span class="step">Method 2</span>
+    <h2>Incremental analysis</h2>
+    <p>Several dated markers record a slip history, not a rate. Rejection sampling, the path fan, interval rates, and why the acceptance rate is a result rather than a nuisance.</p>
+  </a>
+</div>
+
+<p>Two more pages sit alongside each method. <a href="./m1-distributions.html">Distributions</a> covers the shapes you can put on a measurement and what each one claims. <a href="./m2-intervals.html">Reporting</a> covers which summary of a skewed rate belongs in a paper.</p>
+
+<h2>The traps</h2>
+
+<p>Both methods are arithmetic, and arithmetic does what it is told. The two pages below are about the geology that decides whether what it is told is true.</p>
+
+<div class="cards">
+  <a class="card" href="./t1-anchoring.html">
+    <span class="step">Trap 1</span>
+    <h2>When does the clock start?</h2>
+    <p>Strain has accumulated since the last earthquake but nothing has been recorded at the surface. Divide by the marker's full age and you under-read the rate, worst for the youngest markers.</p>
+  </a>
+  <a class="card" href="./t2-mispairing.html">
+    <span class="step">Trap 2</span>
+    <h2>Dating the wrong event</h2>
+    <p>Offsets accumulate from when a channel forms. Luminescence dates its fill, near abandonment. Pair the two and the statistics will not save you, but they will tell you it happened.</p>
+  </a>
+</div>
+
+<h2>A first look</h2>
+
+<p>Below is the whole of Method 1 in one figure. A displacement of PERT(10.5, 12.0, 13.5) m over an age of 4.0 ka, with only the age uncertainty under your control. Drag the slider up and watch a near-symmetric rate distribution grow a tail to the right.</p>
+
+<div class="panel">
+  <h2>The rate distribution, as the age gets worse</h2>
+  <div class="sub">The displacement never changes. Everything you see is the age uncertainty propagating through a division.</div>
+
+  <div class="poster">
+    <p style="font-size:14px;color:var(--ink-soft)">With an age of 4.00 ± 0.20 ka the rate is 3.00 mm/yr with a 68 per cent interval of 2.80 to 3.22, near enough symmetric. Raise the age uncertainty to ± 0.90 ka and the same displacement gives 3.00 mm/yr with an interval of 2.43 to 3.88, and a 95 per cent upper bound of 5.41. The interactive version of this figure needs JavaScript.</p>
+  </div>
+
+  <div class="live">
+    <figure>
+      <canvas id="teaser" width="900" height="300"></canvas>
+      <figcaption id="teaser-cap">Rate distribution for a single dated marker.</figcaption>
+    </figure>
+
+    <div class="controls">
+      <div class="ctl">
+        <label for="sigma">Age uncertainty, 1 sigma <b id="sigma-val">0.20 ka</b></label>
+        <input type="range" id="sigma" min="0.05" max="1.20" step="0.05" value="0.20">
+        <div class="hint">The displacement stays at PERT(10.5, 12.0, 13.5) m throughout.</div>
+      </div>
+    </div>
+
+    <div class="readouts">
+      <div class="readout" id="ro-median"><span class="k">Median rate</span><span class="v">-</span></div>
+      <div class="readout" id="ro-ci"><span class="k">68% interval</span><span class="v">-</span></div>
+      <div class="readout naive" id="ro-naive"><span class="k">Naive ±</span><span class="v">-</span></div>
+      <div class="readout" id="ro-asym"><span class="k">Asymmetry</span><span class="v">-</span></div>
+    </div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+
+    <details>
+      <summary>Results as a table</summary>
+      <div class="body" id="teaser-table"></div>
+    </details>
+  </div>
+</div>
+
+<h2>How to read every figure here</h2>
+
+<p>Colours mean the same thing on every page, and they are the colours used in the corresponding publication figures.</p>
+
+<table>
+  <thead><tr><th>Colour</th><th>Means</th></tr></thead>
+  <tbody>
+    <tr><td><span style="color:var(--c-data);font-weight:600">Blue</span></td><td>Observed data. Marker boxes, input distributions.</td></tr>
+    <tr><td><span style="color:var(--c-naive);font-weight:600">Red-brown</span></td><td>The naive estimate: the thing being corrected.</td></tr>
+    <tr><td><span style="color:var(--c-pref);font-weight:600">Green</span></td><td>The corrected or preferred result, and known ground truth.</td></tr>
+    <tr><td><span style="color:var(--c-incr);font-weight:600">Grey</span></td><td>Monte Carlo paths, the incremental benchmark.</td></tr>
+    <tr><td><span style="color:var(--c-behead);font-weight:600">Dark red</span></td><td>Rejection, failure, a result that cannot be true.</td></tr>
+  </tbody>
+</table>
+
+<p>Because those colours are close in lightness, which is right for print figures separated into panels and wrong for lines overlaid on one axis, every series also carries its own dash pattern and is labelled where it is drawn rather than in a key.</p>
+
+<div class="callout warn">
+  <span class="tag">About the data</span>
+  <p><strong>Every teaching dataset here is synthetic.</strong> The synthetic cases are forward-modelled from a stated answer, so you can check whether an estimator recovers the number it was built from. Two further presets carry displacement and age brackets digitised from published studies, are labelled as published, and are cited on the <a href="./references.html">references page</a>. No unpublished field measurement appears anywhere on this site.</p>
+</div>
+
+</main>
+
+<footer class="site">
+  <p>Monte Carlo slip rates, a teaching site by James La Greca, University of Melbourne.
+  The engine is checked against closed-form results on the <a href="./verify.html">verify page</a>.
+  Method provenance and reading are on the <a href="./references.html">references page</a>.</p>
+  <p><strong>Every teaching dataset on this site is synthetic.</strong>
+  Two presets carry digitised bracket values from published studies and are labelled as such.
+  No unpublished field measurement appears anywhere in this repository.</p>
+</footer>
+</div>
+
+<script type="module" src="./js/pages/index.js"></script>
+</body>
+</html>

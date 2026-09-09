@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onset of offset · Monte Carlo slip rates</title>
+<meta name="description" content="Why dividing a displacement by the full age of its marker under-estimates the slip rate, and how anchoring to the most recent event removes the bias.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/components.css">
+<link rel="stylesheet" href="./css/plots.css">
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <div class="eyebrow">Trap 1 · Onset of offset</div>
+  <h1>When does the clock start?</h1>
+  <p class="lede">A slip rate is a displacement divided by a time. Deciding which time is a question about earthquakes, not about arithmetic, and getting it wrong biases every young marker in the same direction.</p>
+</header>
+
+<nav class="crumbs" aria-label="Sections">
+  <a href="./index.html">Start</a>
+  <a href="./m1-distributions.html">1 &middot; Distributions</a>
+  <a href="./m1-one-marker.html">2 &middot; One marker</a>
+  <a href="./m2-incremental.html">3 &middot; Incremental</a>
+  <a href="./m2-intervals.html">4 &middot; Reporting</a>
+  <a href="./t1-anchoring.html" aria-current="page">5 &middot; Onset of offset</a>
+  <a href="./t2-mispairing.html">6 &middot; Mispairing</a>
+  <a href="./references.html">References</a>
+  <a href="./verify.html">Verify</a>
+</nav>
+
+<main id="main">
+
+<h2>The open interval</h2>
+
+<p>A marker formed 1.6 ka ago and now carries 3.6 m of offset. The obvious rate is 3.6 divided by 1.6, which is 2.25 mm/yr. Consider what that denominator assumes.</p>
+
+<p>Surface displacement on a fault is not delivered continuously. It arrives in earthquakes. Since the most recent one, the fault has been loading elastically and the marker has recorded nothing at all, because there has been nothing to record. If the last earthquake was 0.4 ka ago, then of the marker's 1.6 ka of existence only 1.2 ka were capable of producing the offset you measured.</p>
+
+<p>Charging the rate for that final 0.4 ka is charging it for time in which no displacement could have accumulated. Following Hatem and others (2024), the denominator should be the time since the most recent event.</p>
+
+<div class="eq">
+  SR = D<sub>m</sub> / (t<sub>m</sub> − t<sub>MRE</sub>)
+  <span class="where">D<sub>m</sub> is the offset of the marker, t<sub>m</sub> its age, and t<sub>MRE</sub> the age of the most recent surface-rupturing earthquake at the site.</span>
+</div>
+
+<h2>The bias has a closed form</h2>
+
+<p>Because the correction only changes the denominator, the size of the error follows immediately:</p>
+
+<div class="eq">
+  SR<sub>unanchored</sub> / SR<sub>true</sub> = 1 − t<sub>MRE</sub> / t<sub>m</sub>
+</div>
+
+<p>So the bias depends only on the ratio of the open interval to the marker's age. It is always negative, meaning unanchored rates always read low, and it grows as markers get younger. For a marker only a few open intervals old the effect is large enough to change a conclusion.</p>
+
+<p>This is worth stating plainly because it inverts an intuition. Young, well-dated markers feel like the most reliable ones: the chronology is tighter and the geomorphology is fresher. They are also the ones this bias hits hardest.</p>
+
+<div class="panel">
+  <h2>Anchored against unanchored</h2>
+  <div class="sub">Four markers built from a slip history of exactly 3.00 mm/yr, with the most recent event at 0.40 ka. The only thing that changes between the two columns is the denominator.</div>
+
+  <div class="controls">
+    <div class="ctl">
+      <label for="mre">Age of the most recent event <b id="mre-val">0.40 ka</b></label>
+      <input type="range" id="mre" min="0" max="1.5" step="0.05" value="0.40">
+      <div class="hint">Set it to zero to remove the correction entirely.</div>
+    </div>
+    <div class="ctl">
+      <label for="marker">Marker age for the plot below <b id="marker-val">1.60 ka</b></label>
+      <input type="range" id="marker" min="0.6" max="10" step="0.1" value="1.6">
+    </div>
+    <div class="ctl">
+      <label for="seed">Seed</label>
+      <input type="text" id="seed" value="teaching" spellcheck="false">
+    </div>
+  </div>
+
+  <div class="poster">
+    <p style="font-size:14px;color:var(--ink-soft)">With the most recent event at 0.40 ka, the unanchored rates read 2.25, 2.61, 2.75 and 2.84 mm/yr for markers aged 1.60, 3.10, 4.80 and 7.40 ka. The anchored rates are 3.00 mm/yr in every case. The biases are −25.0, −12.9, −8.3 and −5.4 per cent, matching the closed form to three digits. This table is generated live when JavaScript is available.</p>
+  </div>
+
+  <div class="live" id="bias-table-wrap">
+    <div id="bias-table"></div>
+  </div>
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+</div>
+
+<div class="panel">
+  <h2>Bias against marker age</h2>
+  <div class="sub">The curve is the closed form. The points are Monte Carlo medians. They should sit on it.</div>
+  <figure class="live">
+    <canvas id="bias" width="900" height="320"></canvas>
+    <figcaption id="cap-bias"></figcaption>
+  </figure>
+</div>
+
+<div class="panel">
+  <h2>The two rate distributions</h2>
+  <div class="sub">For the marker age selected above. Move the marker-age slider and watch the gap close.</div>
+  <figure class="live">
+    <canvas id="pdfs" width="900" height="320"></canvas>
+    <figcaption id="cap-pdfs"></figcaption>
+  </figure>
+  <div class="readouts">
+    <div class="readout naive" id="ro-un"><span class="k">Unanchored</span><span class="v">-</span></div>
+    <div class="readout" id="ro-an"><span class="k">Anchored</span><span class="v">-</span></div>
+    <div class="readout bad" id="ro-bias"><span class="k">Bias</span><span class="v">-</span></div>
+    <div class="readout" id="ro-width"><span class="k">Interval width</span><span class="v">-</span></div>
+  </div>
+</div>
+
+<h2>Anchoring is not free</h2>
+
+<p>Subtracting an uncertain age from another uncertain age adds their variances. The anchored rate is unbiased but wider, and for the youngest marker the 68 per cent interval roughly doubles in width. That is the honest trade: you have swapped a confident wrong answer for a less confident right one.</p>
+
+<p>It also means the correction should be applied consistently rather than only where it helps. Applying it to your young markers and not your old ones would manufacture an apparent slip-rate change out of a bookkeeping choice.</p>
+
+<div class="callout key">
+  <span class="tag">What to do</span>
+  <p>State the anchor. Say which earthquake it is, where its age came from, and apply it to every marker at the site including the ones where the correction is negligible. If you have no paleoseismic constraint on the most recent event, say that too, and report the unanchored rate as the lower bound it is.</p>
+</div>
+
+<h2>A caution about very young markers</h2>
+
+<p>As a marker's age approaches the age of the most recent event, the denominator approaches zero and the anchored rate runs away to infinity. That is not a numerical artefact to be clipped: it is the method telling you that a marker which has recorded one earthquake, or none, cannot constrain a rate. Set the most recent event slider close to the marker age above and watch the interval become useless.</p>
+
+<p>A rate needs at least two earthquakes between its endpoints before the word means anything. Below that you are not measuring a rate, you are measuring one displacement and dividing it by a poorly known number.</p>
+
+</main>
+
+<footer class="site">
+  <p>Monte Carlo slip rates, a teaching site by James La Greca, University of Melbourne.
+  The engine is checked against closed-form results on the <a href="./verify.html">verify page</a>.
+  Method provenance and reading are on the <a href="./references.html">references page</a>.</p>
+  <p><strong>Every teaching dataset on this site is synthetic.</strong>
+  Two presets carry digitised bracket values from published studies and are labelled as such.
+  No unpublished field measurement appears anywhere in this repository.</p>
+</footer>
+</div>
+
+<script type="module" src="./js/pages/t1-anchoring.js"></script>
+</body>
+</html>

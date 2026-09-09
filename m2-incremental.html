@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incremental analysis · Monte Carlo slip rates</title>
+<meta name="description" content="Rejection sampling for incremental fault slip rates: the monotonicity condition, the path fan, interval rates, and why the acceptance rate is a result.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/components.css">
+<link rel="stylesheet" href="./css/plots.css">
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <div class="eyebrow">Method 2 · Several dated markers</div>
+  <h1>Incremental slip rates</h1>
+  <p class="lede">A flight of dated markers records a slip history, not a rate. Getting a history out of them means throwing most of your random draws away, and the fraction you keep turns out to be one of the most informative numbers in the analysis.</p>
+</header>
+
+<nav class="crumbs" aria-label="Sections">
+  <a href="./index.html">Start</a>
+  <a href="./m1-distributions.html">1 &middot; Distributions</a>
+  <a href="./m1-one-marker.html">2 &middot; One marker</a>
+  <a href="./m2-incremental.html" aria-current="page">3 &middot; Incremental</a>
+  <a href="./m2-intervals.html">4 &middot; Reporting</a>
+  <a href="./t1-anchoring.html">5 &middot; Onset of offset</a>
+  <a href="./t2-mispairing.html">6 &middot; Mispairing</a>
+  <a href="./references.html">References</a>
+  <a href="./verify.html">Verify</a>
+</nav>
+
+<main id="main">
+
+<h2>Why one rate is not enough</h2>
+
+<p>Suppose you have four dated offset markers rather than one. You could compute four separate rates by Method 1 and report the spread. That would be wrong in an interesting way: the four markers are not four independent measurements of the same thing. They are four points on a single cumulative slip history, and they constrain each other.</p>
+
+<p>Two constraints come free with the geology. A fault does not slip backwards, so cumulative displacement can only increase with age. And an older marker cannot carry less offset than a younger one, or the two have been misidentified. Together these say the sequence of points must be monotonic in both coordinates.</p>
+
+<h2>Rejection sampling</h2>
+
+<p>The method, after Gold and Cowgill (2011) and Zinke and others (2017, 2019), is to enforce that constraint by brute force.</p>
+
+<ol>
+  <li>Draw an age and a displacement for every marker, independently.</li>
+  <li>Keep the realisation only if the ages <em>and</em> the displacements are both strictly increasing.</li>
+  <li>Otherwise throw the whole realisation away and draw again.</li>
+  <li>From each accepted path, take the rate over each interval between successive markers.</li>
+</ol>
+
+<p>Discarding the entire realisation, rather than repairing the offending marker, is what makes this correct. The surviving draws are samples from the joint distribution conditioned on the constraint, which is what you wanted. This is the same accept-and-reject loop implemented in Zinke's RISeR toolbox, which is the reference for the method.</p>
+
+<details>
+  <summary>Show the code that just ran</summary>
+  <div class="body" id="src-m2"></div>
+</details>
+
+<h2>The path fan</h2>
+
+<p>Every accepted realisation is a path through displacement-age space. Drawn together, thousands of them make the signature figure of this literature. The width of the fan is the uncertainty; its shape carries information that no single rate does.</p>
+
+<div class="panel">
+  <h2>Incremental slip rate</h2>
+  <div class="sub">Start with the well-behaved case, then switch to a preset where the markers disagree with each other and watch the acceptance rate fall.</div>
+
+  <div class="controls">
+    <div class="ctl">
+      <label for="preset">Preset</label>
+      <select id="preset"></select>
+    </div>
+    <div class="ctl">
+      <label for="n">Accepted paths <b id="n-val">5,000</b></label>
+      <input type="range" id="n" min="0" max="3" step="1" value="1">
+      <div class="hint">1,000 · 5,000 · 10,000 · 20,000</div>
+    </div>
+    <div class="ctl">
+      <label for="maxrate">Maximum rate cap <b id="maxrate-val">off</b></label>
+      <input type="range" id="maxrate" min="0" max="4" step="1" value="0">
+      <div class="hint">off · 10 · 20 · 50 · 100 mm/yr</div>
+    </div>
+    <div class="ctl">
+      <label for="seed">Seed</label>
+      <input type="text" id="seed" value="teaching" spellcheck="false">
+    </div>
+  </div>
+
+  <div class="checks">
+    <label><input type="checkbox" id="monotonic" checked> Enforce monotonicity</label>
+    <label><input type="checkbox" id="anchor" checked> Use the MRE anchor, where the preset has one</label>
+    <label><input type="checkbox" id="density"> Render-quality density mode</label>
+  </div>
+
+  <div id="provenance" style="margin-top:14px"></div>
+</div>
+
+<div class="panel">
+  <h2>Accepted paths</h2>
+  <div class="sub">Grey lines are accepted realisations. Blue dashed boxes are the observation brackets, the data before any modelling.</div>
+
+  <div class="poster">
+    <p style="font-size:14px;color:var(--ink-soft)">For four markers forward-modelled from a slip rate of exactly 3.00 mm/yr, every realisation satisfies monotonicity, the acceptance rate is 100 per cent, and each interval returns 3.00 mm/yr. This figure is interactive when JavaScript is available.</p>
+  </div>
+
+  <figure class="live">
+    <canvas id="fan" width="900" height="440"></canvas>
+    <figcaption id="cap-fan"></figcaption>
+  </figure>
+
+  <div class="gauge" id="gauge">
+    <div class="track"><div class="fill" id="gauge-fill" style="width:0%"></div></div>
+    <div class="caption" id="gauge-cap">-</div>
+  </div>
+
+  <div class="readouts">
+    <div class="readout" id="ro-accept"><span class="k">Acceptance</span><span class="v">-</span></div>
+    <div class="readout" id="ro-attempts"><span class="k">Attempts</span><span class="v">-</span></div>
+    <div class="readout" id="ro-bestfit"><span class="k">Best-fit rate</span><span class="v">-</span></div>
+    <div class="readout" id="ro-bestci"><span class="k">68% interval</span><span class="v">-</span></div>
+  </div>
+
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+</div>
+
+<h2>Why a realisation gets rejected</h2>
+
+<p>The condition is easier to believe once you have seen it fail. Below is one realisation that was thrown away, with the offending pair ringed and the reason named.</p>
+
+<div class="panel">
+  <figure class="live">
+    <canvas id="reject" width="900" height="300"></canvas>
+    <figcaption id="cap-reject"></figcaption>
+  </figure>
+</div>
+
+<div class="callout warn">
+  <span class="tag">Try this</span>
+  <p>Turn off <b>Enforce monotonicity</b> in the controls above and look at the fan again. The paths now double back on themselves, which means the fault un-slipped, and the interval rates go negative. Nothing in the arithmetic prevents that. Only the geology does, and only if you tell it to.</p>
+</div>
+
+<h2>Interval rates</h2>
+
+<p>Each accepted path gives a rate for every interval between successive markers. Collected across all paths, each interval has its own distribution. This is the actual output of the method: not one slip rate, but a rate for each window the data can resolve.</p>
+
+<div class="panel">
+  <h2>Rate for each interval</h2>
+  <div class="sub">One small panel per marker pair. Watch how much wider these get when the data are internally inconsistent.</div>
+  <div class="smallmults live" id="intervals"></div>
+  <details>
+    <summary>Interval rates as a table</summary>
+    <div class="body" id="interval-table"></div>
+  </details>
+</div>
+
+<h2>The acceptance rate is a result</h2>
+
+<p>It is tempting to read the acceptance rate as a performance statistic, something to be improved. It is not. It is a measurement of how well your markers agree with one another.</p>
+
+<ul>
+  <li><b>Near 100 per cent.</b> The constraint is barely binding. Your ages and offsets are already consistent with a monotonic history, and the analysis is telling you very little you did not know.</li>
+  <li><b>A few tens of per cent.</b> The constraint is doing real work. Bracketing constraints overlap, and conditioning on monotonicity is genuinely sharpening the result. Both published presets on this page sit here.</li>
+  <li><b>Single digits.</b> Something is wrong. The surviving draws are a strange, heavily conditioned corner of your input distributions, and any rate computed from them should be treated as a symptom rather than a result. The <a href="./t2-mispairing.html">mispairing page</a> is a worked example.</li>
+</ul>
+
+<p>Report it. A published incremental slip rate without its acceptance rate is missing the diagnostic that tells a reader whether to believe it.</p>
+
+<div class="callout key">
+  <span class="tag">The other reason to prefer intervals</span>
+  <p>An interval rate is a difference divided by a difference, so any error shared between two neighbouring markers partly cancels. A rate computed from a single marker carries that error in full. This is the quiet argument for incremental analysis over per-marker rates, and it becomes the whole argument on the <a href="./t2-mispairing.html">mispairing page</a>.</p>
+</div>
+
+</main>
+
+<footer class="site">
+  <p>Monte Carlo slip rates, a teaching site by James La Greca, University of Melbourne.
+  The engine is checked against closed-form results on the <a href="./verify.html">verify page</a>.
+  Method provenance and reading are on the <a href="./references.html">references page</a>.</p>
+  <p><strong>Every teaching dataset on this site is synthetic.</strong>
+  Two presets carry digitised bracket values from published studies and are labelled as such.
+  No unpublished field measurement appears anywhere in this repository.</p>
+</footer>
+</div>
+
+<script type="module" src="./js/pages/m2-incremental.js"></script>
+</body>
+</html>

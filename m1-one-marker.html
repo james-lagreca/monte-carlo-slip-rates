@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One dated marker · Monte Carlo slip rates</title>
+<meta name="description" content="Why the slip rate of a single dated marker is a skewed distribution, and why plus-or-minus error propagation fails when the age is poorly known.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/components.css">
+<link rel="stylesheet" href="./css/plots.css">
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <div class="eyebrow">Method 1 · One dated marker</div>
+  <h1>Dividing one distribution by another</h1>
+  <p class="lede">The oldest calculation in the field: an offset over an age. Done properly it produces a distribution, not a number with an error bar, and the difference matters most exactly when your age is worst.</p>
+</header>
+
+<nav class="crumbs" aria-label="Sections">
+  <a href="./index.html">Start</a>
+  <a href="./m1-distributions.html">1 &middot; Distributions</a>
+  <a href="./m1-one-marker.html" aria-current="page">2 &middot; One marker</a>
+  <a href="./m2-incremental.html">3 &middot; Incremental</a>
+  <a href="./m2-intervals.html">4 &middot; Reporting</a>
+  <a href="./t1-anchoring.html">5 &middot; Onset of offset</a>
+  <a href="./t2-mispairing.html">6 &middot; Mispairing</a>
+  <a href="./references.html">References</a>
+  <a href="./verify.html">Verify</a>
+</nav>
+
+<main id="main">
+
+<h2>Your measurement is two distributions</h2>
+
+<p>A restored offset is not 12 m. It is a preferred restoration of 12 m, which could defensibly be as little as 10.5 m or as much as 13.5 m, and the preferred value is genuinely more likely than the bounds. That is a distribution, and on this site it is a Beta-PERT, the shape a minimum, preferred and maximum estimate really implies.</p>
+
+<p>An optically stimulated luminescence age is not 4 ka. It is 4.0 ± 0.2 ka, a Gaussian. A calibrated radiocarbon age is not even that: it is whatever shape the calibration curve produced, which is often lumpy and sometimes has two peaks.</p>
+
+<div class="eq">
+  SR = D / (t − t<sub>anchor</sub>)
+  <span class="where">D is the displacement in metres, t the marker age in ka, and t<sub>anchor</sub> the onset of the displacement clock. Set the anchor to zero for now; the <a href="./t1-anchoring.html">onset of offset page</a> is about why you should not leave it there.</span>
+</div>
+
+<h2>Two ways to answer</h2>
+
+<p>The conventional answer divides the central values and propagates the errors to first order:</p>
+
+<div class="eq">
+  SR = D̄ / T̄ &nbsp;&nbsp;and&nbsp;&nbsp; σ<sub>SR</sub> = SR · √( (σ<sub>D</sub>/D̄)² + (σ<sub>T</sub>/T̄)² )
+</div>
+
+<p>This is not a straw man. It is what most published single-marker slip rates are, and for a well-dated marker it is very nearly right. The Monte Carlo answer instead draws a displacement, draws an age, divides, and repeats ten thousand times or more. The whole method is four lines.</p>
+
+<details>
+  <summary>Show the code that just ran</summary>
+  <div class="body" id="src-m1"></div>
+</details>
+
+<h2>Try it</h2>
+
+<div class="panel">
+  <h2>Slip rate from one marker</h2>
+  <div class="sub">Switch presets to compare a well-dated marker against the same marker with a worse age. The displacement is identical in those two cases; only the age changes.</div>
+
+  <div class="controls">
+    <div class="ctl">
+      <label for="preset">Preset</label>
+      <select id="preset"></select>
+    </div>
+    <div class="ctl">
+      <label for="n">Realisations <b id="n-val">50,000</b></label>
+      <input type="range" id="n" min="0" max="3" step="1" value="2">
+      <div class="hint">1,000 · 10,000 · 50,000 · 200,000</div>
+    </div>
+    <div class="ctl">
+      <label for="seed">Seed</label>
+      <input type="text" id="seed" value="teaching" spellcheck="false">
+      <div class="hint">Any text. The same seed always gives the same answer.</div>
+    </div>
+  </div>
+
+  <div class="checks">
+    <label><input type="checkbox" id="show-naive" checked> Show the naive ± interval</label>
+    <label><input type="checkbox" id="show-truth" checked> Show the true rate, where there is one</label>
+  </div>
+
+  <div id="provenance" style="margin-top:14px"></div>
+</div>
+
+<div class="panel">
+  <h2>What is being divided</h2>
+  <div class="sub">The displacement distribution and the age distribution, drawn on their own axes.</div>
+  <div class="figrow">
+    <figure>
+      <canvas id="pdf-d" width="440" height="180"></canvas>
+      <figcaption id="cap-d">Displacement.</figcaption>
+    </figure>
+    <figure>
+      <canvas id="pdf-t" width="440" height="180"></canvas>
+      <figcaption id="cap-t">Age.</figcaption>
+    </figure>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>The rate distribution</h2>
+  <div class="sub">Ten thousand divisions, binned and smoothed.</div>
+
+  <div class="poster">
+    <p style="font-size:14px;color:var(--ink-soft)">For a well-dated marker the median is 3.00 mm/yr with a 68 per cent interval of 2.80 to 3.22. Degrade the age from ± 0.20 to ± 0.90 ka and the median stays at 3.00 but the interval becomes 2.43 to 3.88, with a 95 per cent upper bound of 5.41 mm/yr. This figure is interactive when JavaScript is available.</p>
+  </div>
+
+  <figure class="live">
+    <canvas id="rate" width="900" height="330"></canvas>
+    <figcaption id="cap-rate"></figcaption>
+  </figure>
+
+  <div class="readouts">
+    <div class="readout" id="ro-median"><span class="k">Median</span><span class="v">-</span></div>
+    <div class="readout" id="ro-ci68"><span class="k">68% interval</span><span class="v">-</span></div>
+    <div class="readout" id="ro-ci95"><span class="k">95% interval</span><span class="v">-</span></div>
+    <div class="readout" id="ro-report"><span class="k">As reported</span><span class="v">-</span></div>
+    <div class="readout naive" id="ro-naive"><span class="k">Naive ±</span><span class="v">-</span></div>
+    <div class="readout" id="ro-asym"><span class="k">Asymmetry</span><span class="v">-</span></div>
+  </div>
+
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+  <div id="warnings"></div>
+
+  <details>
+    <summary>Results as a table</summary>
+    <div class="body" id="rate-table"></div>
+  </details>
+</div>
+
+<h2>Where the two answers part company</h2>
+
+<p id="compare-prose">Load the two presets in turn and watch the comparison box below.</p>
+
+<div class="callout" id="compare-box">
+  <span class="tag">Naive against Monte Carlo</span>
+  <p id="compare-text">-</p>
+</div>
+
+<h2>Why the tail is on the right</h2>
+
+<p>The rate is a displacement divided by an age. Small ages produce large rates, and there is no upper limit to how large: as the sampled age approaches zero the rate runs away. Large ages produce small rates, but a rate cannot fall below zero. The asymmetry is built into the arithmetic.</p>
+
+<p>So the long right tail of the rate distribution <em>is</em> the short lower tail of the age distribution, stretched. That is why the effect is invisible when the age is well known and severe when it is not, and it is why a Gaussian age whose support reaches zero is a genuine hazard rather than a pedantic one. The engine warns you when that happens.</p>
+
+<div class="callout key">
+  <span class="tag">What to report</span>
+  <p>The median with an asymmetric interval, written the way it will be read: <span class="num">3.00 +0.88 −0.57 mm/yr</span>. Not the mean, which the tail drags upward. Not a single ±, which cannot describe a shape that is not symmetric. State the confidence level as a number, 68.27 per cent rather than one sigma, because for a skewed distribution the two are not the same thing.</p>
+</div>
+
+<p>Which interval to use, and what to do when the distribution has two peaks, is the subject of <a href="./m2-intervals.html">the reporting page</a>.</p>
+
+</main>
+
+<footer class="site">
+  <p>Monte Carlo slip rates, a teaching site by James La Greca, University of Melbourne.
+  The engine is checked against closed-form results on the <a href="./verify.html">verify page</a>.
+  Method provenance and reading are on the <a href="./references.html">references page</a>.</p>
+  <p><strong>Every teaching dataset on this site is synthetic.</strong>
+  Two presets carry digitised bracket values from published studies and are labelled as such.
+  No unpublished field measurement appears anywhere in this repository.</p>
+</footer>
+</div>
+
+<script type="module" src="./js/pages/m1-one-marker.js"></script>
+</body>
+</html>

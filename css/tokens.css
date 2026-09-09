@@ -1,0 +1,58 @@
+/* ============================================================================
+   Design tokens.
+
+   Chrome follows the drafting-paper house style of the Earthquake Teaching
+   Demos: grid-paper ground, ink borders, offset shadows, Space Grotesk for
+   display and IBM Plex for everything else.
+
+   Plot series use the manuscript figure palette instead, so a figure on this
+   site and the same figure in a paper are the same colours. Those values come
+   from the publication matplotlib rcParams.
+   ========================================================================== */
+
+:root {
+  /* ---- chrome (teaching-demos house style) ---- */
+  --paper: #EDF0EE;
+  --panel: #F7F8F6;
+  --white: #ffffff;
+  --ink: #1E2A32;
+  --ink-soft: #54636D;
+  --ink-faint: #8A959C;
+  --rupture: #B23A2E;
+  --grid: #D5DAD6;
+  --line: #C3CAC5;
+
+  /* ---- plot series (manuscript palette; semantics fixed site-wide) ---- */
+  --c-data:   #3B5B80;   /* observed data, marker boxes */
+  --c-naive:  #A6524B;   /* the naive estimate, the thing being corrected */
+  --c-incr:   #6E6E6E;   /* incremental benchmark */
+  --c-pref:   #2E6E4E;   /* corrected or preferred, and ground truth */
+  --c-budget: #6E5FA0;   /* secondary model */
+  --c-behead: #A32732;   /* rejection, failure, the absurd result */
+  --c-sub:    #27406E;   /* anchored, the correction applied */
+
+  /* ---- type ---- */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ---- geometry ---- */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --border: 1.5px solid var(--ink);
+  --shadow: 4px 4px 0 rgba(30, 42, 50, .12);
+  --shadow-hover: 6px 6px 0 rgba(30, 42, 50, .18);
+  --wrap: 980px;
+  --prose: 70ch;
+}
+
+/* The palette is near-iso-luminant by design: right for print figures that are
+   separated by panel, wrong for lines overlaid on one axis. Every series
+   therefore carries a dash pattern as well as a colour, and is labelled in the
+   plot rather than in a legend. These are the patterns the plot layer reads. */
+:root {
+  --dash-solid: none;
+  --dash-truth: 6 4;
+  --dash-naive: 2 3;
+  --dash-alt: 9 3 2 3;
+}

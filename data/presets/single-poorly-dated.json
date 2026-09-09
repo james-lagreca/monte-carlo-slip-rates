@@ -1,0 +1,29 @@
+{
+  "id": "single-poorly-dated",
+  "kind": "single",
+  "synthetic": true,
+  "title": "The same marker, a worse age",
+  "teaches": "Identical displacement, age sigma raised from 0.20 to 0.90 ka. The rate grows a long right tail and the naive interval stops being usable.",
+  "provenance": "Invented for teaching. Not a real site and not real measurements.",
+  "units": {
+    "age": "ka",
+    "displacement": "m",
+    "rate": "mm/yr"
+  },
+  "truth": {
+    "slipRate": 3,
+    "note": "Same offset as single-well-behaved. Only the age changed."
+  },
+  "displacement": {
+    "type": "pert",
+    "min": 10.5,
+    "mode": 12,
+    "max": 13.5
+  },
+  "age": {
+    "type": "gauss",
+    "mean": 4,
+    "sd": 0.9
+  },
+  "anchor": null
+}

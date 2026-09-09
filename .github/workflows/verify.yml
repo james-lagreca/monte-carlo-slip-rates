@@ -1,0 +1,22 @@
+name: verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      # No install step: the engine has no dependencies.
+      - name: Run engine self-checks
+        run: node tools/verify.js
+      - name: Confirm presets and fixtures regenerate unchanged
+        run: |
+          node tools/make_presets.mjs
+          node tools/make_fixtures.mjs
+          git diff --exit-code -- data/

@@ -1,0 +1,30 @@
+{
+  "id": "single-two-restorations",
+  "kind": "single",
+  "synthetic": true,
+  "title": "Two defensible restorations",
+  "teaches": "When two reconstructions are equally valid, the honest displacement PDF is a trapezoid whose flat top spans both.",
+  "provenance": "Invented for teaching. Not a real site and not real measurements.",
+  "units": {
+    "age": "ka",
+    "displacement": "m",
+    "rate": "mm/yr"
+  },
+  "truth": {
+    "slipRate": 3,
+    "note": "The flat top runs from 11 to 13 m."
+  },
+  "displacement": {
+    "type": "trapezoid",
+    "min": 9,
+    "lo": 11,
+    "hi": 13,
+    "max": 15
+  },
+  "age": {
+    "type": "gauss",
+    "mean": 4,
+    "sd": 0.3
+  },
+  "anchor": null
+}

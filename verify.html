@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify the engine · Monte Carlo slip rates</title>
+<meta name="description" content="Self-checks of the Monte Carlo engine against closed-form results.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/components.css">
+<link rel="stylesheet" href="./css/plots.css">
+<style>
+  table.checks-table { font-size: 13px; max-width: 100%; }
+  table.checks-table td.ok { color: var(--c-pref); font-weight: 600; }
+  table.checks-table td.fail { color: var(--c-behead); font-weight: 700; }
+  table.checks-table td.name { max-width: 30em; }
+</style>
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <div class="eyebrow">Verification</div>
+  <h1>Checking the engine</h1>
+  <p class="lede">A teaching tool that gets the arithmetic wrong teaches the wrong thing. Every quantity below is compared against an answer derived independently of the code, and most of them can be worked out by hand.</p>
+</header>
+
+<nav class="crumbs" aria-label="Sections">
+  <a href="./index.html">Start</a>
+  <a href="./m1-distributions.html">1 &middot; Distributions</a>
+  <a href="./m1-one-marker.html">2 &middot; One marker</a>
+  <a href="./m2-incremental.html">3 &middot; Incremental</a>
+  <a href="./m2-intervals.html">4 &middot; Reporting</a>
+  <a href="./t1-anchoring.html">5 &middot; Onset of offset</a>
+  <a href="./t2-mispairing.html">6 &middot; Mispairing</a>
+  <a href="./references.html">References</a>
+  <a href="./verify.html" aria-current="page">Verify</a>
+</nav>
+
+<main id="main">
+
+<p>The same checks run two ways. In a terminal, <code>node tools/verify.js</code> prints them and exits non-zero on failure, which is what continuous integration uses. Here they run in your browser, against the same engine files the rest of the site imports.</p>
+
+<div class="panel">
+  <div class="btnrow">
+    <button id="run">Run the checks</button>
+    <button id="run-fast" class="secondary">Fast run, skipping the sampling checks</button>
+  </div>
+  <div class="status" id="status" role="status" aria-live="polite">Ready.</div>
+  <div class="readouts">
+    <div class="readout good" id="ro-pass"><span class="k">Passed</span><span class="v">-</span></div>
+    <div class="readout bad" id="ro-fail"><span class="k">Failed</span><span class="v">-</span></div>
+    <div class="readout" id="ro-time"><span class="k">Elapsed</span><span class="v">-</span></div>
+  </div>
+</div>
+
+<div id="results"></div>
+
+<h2>The checks that carry the teaching</h2>
+
+<p>Four of these are load-bearing, in the sense that if they fail then a page on this site is teaching something false.</p>
+
+<ul>
+  <li><b>The inverse transform is exact.</b> <code>cdf(invCdf(p)) − p</code> is asserted below 1e-12 with no sampling involved. Because it is deterministic, a failure is a real bug rather than an unlucky run.</li>
+  <li><b>Ratio quantiles.</b> For a fixed displacement over a Gaussian age the quantiles have a closed form, <code>D / (µ + σΦ⁻¹(1−p))</code>. This underwrites the whole of Method 1.</li>
+  <li><b>The monotonicity acceptance rate.</b> <code>Φ((µ₂−µ₁)/√(σ₁²+σ₂²))</code>, checked at three separations including the one used on the mispairing page.</li>
+  <li><b>The open-interval bias.</b> <code>1 − t_MRE/t_m</code>, checked against Monte Carlo medians on four markers.</li>
+</ul>
+
+<p>The remaining checks cover the random number generator, the analytic moments of every distribution shape, seed reproducibility, and the ability of the incremental estimator to recover the slip history its test data were built from.</p>
+
+</main>
+
+<footer class="site">
+  <p>Monte Carlo slip rates, a teaching site by James La Greca, University of Melbourne.
+  The engine is checked against closed-form results on the <a href="./verify.html">verify page</a>.
+  Method provenance and reading are on the <a href="./references.html">references page</a>.</p>
+  <p><strong>Every teaching dataset on this site is synthetic.</strong>
+  Two presets carry digitised bracket values from published studies and are labelled as such.
+  No unpublished field measurement appears anywhere in this repository.</p>
+</footer>
+</div>
+
+<script type="module" src="./js/pages/verify.js"></script>
+</body>
+</html>

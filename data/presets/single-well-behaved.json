@@ -1,0 +1,29 @@
+{
+  "id": "single-well-behaved",
+  "kind": "single",
+  "synthetic": true,
+  "title": "A well-dated marker",
+  "teaches": "With a tightly constrained age, Monte Carlo and naive error propagation agree.",
+  "provenance": "Invented for teaching. Not a real site and not real measurements.",
+  "units": {
+    "age": "ka",
+    "displacement": "m",
+    "rate": "mm/yr"
+  },
+  "truth": {
+    "slipRate": 3,
+    "note": "Offset and age chosen so the answer is exactly 3.00 mm/yr."
+  },
+  "displacement": {
+    "type": "pert",
+    "min": 10.5,
+    "mode": 12,
+    "max": 13.5
+  },
+  "age": {
+    "type": "gauss",
+    "mean": 4,
+    "sd": 0.2
+  },
+  "anchor": null
+}

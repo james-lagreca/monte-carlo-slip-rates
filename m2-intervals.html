@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporting · Monte Carlo slip rates</title>
+<meta name="description" content="Percentile against highest posterior density intervals for a skewed slip rate, and which number belongs in a paper.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/components.css">
+<link rel="stylesheet" href="./css/plots.css">
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <div class="eyebrow">Method 2 · Reporting</div>
+  <h1>Which number goes in the paper</h1>
+  <p class="lede">You have ten thousand slip rates. A paper needs one, with an uncertainty. The choice of how to compress the distribution is not cosmetic: two defensible conventions give different numbers, and one of them moves when you change a setting that has nothing to do with your data.</p>
+</header>
+
+<nav class="crumbs" aria-label="Sections">
+  <a href="./index.html">Start</a>
+  <a href="./m1-distributions.html">1 &middot; Distributions</a>
+  <a href="./m1-one-marker.html">2 &middot; One marker</a>
+  <a href="./m2-incremental.html">3 &middot; Incremental</a>
+  <a href="./m2-intervals.html" aria-current="page">4 &middot; Reporting</a>
+  <a href="./t1-anchoring.html">5 &middot; Onset of offset</a>
+  <a href="./t2-mispairing.html">6 &middot; Mispairing</a>
+  <a href="./references.html">References</a>
+  <a href="./verify.html">Verify</a>
+</nav>
+
+<main id="main">
+
+<h2>Three ways to summarise</h2>
+
+<h3>Mean and standard deviation</h3>
+<p>The wrong answer, included so it can be dismissed. A skewed distribution has its mean pulled towards the long tail, so the mean is not the most likely value and is not the middle one either. Worse, the interval it implies is symmetric, and the distribution is not.</p>
+
+<h3>Percentile interval</h3>
+<p>Sort the samples and read off the 15.865th, 50th and 84.135th values. That gives a median and a 68.27 per cent interval that is asymmetric in the right direction. It has one large virtue: there is nothing to tune. Two people with the same samples get the same interval, and the answer does not depend on how anyone binned anything.</p>
+<p>Its weakness is the mirror of that virtue. Because it takes equal probability from each tail, a long right tail drags the upper bound out further than the shape of the distribution really justifies.</p>
+
+<h3>Highest posterior density</h3>
+<p>Take the narrowest set of values that together hold 68.27 per cent of the probability. Do it by sorting bins by height and accumulating until you have enough. The result tracks the peak, is usually narrower than the percentile interval, and has a real advantage: if the distribution has two separate peaks the method reports two separate clusters instead of pretending the gap between them is plausible.</p>
+<p>Its weakness is that it depends on binning and smoothing, which are choices about the plot rather than facts about the data.</p>
+
+<div class="panel">
+  <h2>The two intervals, side by side</h2>
+  <div class="sub">Drag the bin count and the smoothing. Watch which interval moves.</div>
+
+  <div class="controls">
+    <div class="ctl">
+      <label for="preset">Rate distribution</label>
+      <select id="preset"></select>
+    </div>
+    <div class="ctl">
+      <label for="conf">Confidence <b id="conf-val">68.27%</b></label>
+      <input type="range" id="conf" min="0" max="3" step="1" value="0">
+      <div class="hint">68.27 · 90 · 95 · 99</div>
+    </div>
+    <div class="ctl">
+      <label for="bins">Bins <b id="bins-val">200</b></label>
+      <input type="range" id="bins" min="30" max="500" step="10" value="200">
+    </div>
+    <div class="ctl">
+      <label for="bw">Smoothing <b id="bw-val">1.00×</b></label>
+      <input type="range" id="bw" min="0.2" max="3" step="0.1" value="1">
+      <div class="hint">Multiplies the Silverman bandwidth.</div>
+    </div>
+  </div>
+
+  <div class="checks">
+    <label><input type="radio" name="method" value="percentile" checked> Percentile only</label>
+    <label><input type="radio" name="method" value="hpd"> HPD only</label>
+    <label><input type="radio" name="method" value="both"> Both</label>
+  </div>
+
+  <div class="poster">
+    <p style="font-size:14px;color:var(--ink-soft)">On a right-skewed rate distribution the percentile interval runs roughly 2.43 to 3.88 mm/yr while the highest posterior density interval runs roughly 2.20 to 3.54. The HPD interval is narrower and sits lower. This comparison is interactive when JavaScript is available.</p>
+  </div>
+
+  <figure class="live">
+    <canvas id="pdf" width="900" height="340"></canvas>
+    <figcaption id="cap-pdf"></figcaption>
+  </figure>
+
+  <div class="readouts">
+    <div class="readout data" id="ro-pct"><span class="k">Percentile</span><span class="v">-</span></div>
+    <div class="readout good" id="ro-hpd"><span class="k">HPD</span><span class="v">-</span></div>
+    <div class="readout" id="ro-width"><span class="k">HPD narrower by</span><span class="v">-</span></div>
+    <div class="readout naive" id="ro-mean"><span class="k">Mean ± sd</span><span class="v">-</span></div>
+  </div>
+
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+  <details>
+    <summary>Summaries as a table</summary>
+    <div class="body" id="table"></div>
+  </details>
+</div>
+
+<div class="callout key">
+  <span class="tag">The thing to notice</span>
+  <p>Drag the bins and smoothing sliders. <strong>The HPD bounds move. The percentile bounds do not.</strong> That is the whole trade-off made physical: HPD gives you a tighter and more representative interval, at the cost of depending on a choice that is not in your data. It is exactly why RISeR implements both and makes you pick.</p>
+</div>
+
+<h2>When the distribution has two peaks</h2>
+
+<p>Load the bimodal preset. The percentile interval spans the gap between the two peaks, which asserts that the values in the middle are plausible when the analysis says they are among the least plausible in the range. The HPD method instead reports two clusters and leaves the gap out.</p>
+
+<p>This is not a contrived case. Calibrated radiocarbon ages go bimodal routinely wherever the calibration curve has a plateau, and the rate inherits it. If your rate distribution has two peaks, a single interval of any kind is hiding your main result.</p>
+
+<div id="cluster-note"></div>
+
+<h2>What to report</h2>
+
+<ol>
+  <li><b>The median with a percentile interval</b> as the headline number. It is reproducible without tuning, which matters more for a published value than being slightly narrower.</li>
+  <li><b>The HPD as well</b> when the distribution is multimodal, or when the percentile interval is visibly dragged by a tail. Report the clusters, not their outer envelope.</li>
+  <li><b>Say which you used</b>, and at what confidence level, as a number. Write 68.27 per cent rather than one sigma: for a skewed distribution those are not the same statement.</li>
+  <li><b>Plot the distribution.</b> A median and two bounds cannot show bimodality, a fat tail, or a pile-up against a hard bound. The figure can.</li>
+  <li><b>Write the errors asymmetrically.</b> <span class="num">7.0 +1.0 −0.7 mm/yr</span>, not <span class="num">7.0 ± 0.85</span>. The second discards the shape you went to the trouble of computing.</li>
+</ol>
+
+<div class="callout warn">
+  <span class="tag">And the number that is usually missing</span>
+  <p>For an incremental analysis, report the <b>acceptance rate</b> alongside the interval. Without it a reader cannot tell whether your markers agreed with each other or whether the answer came from a heavily conditioned corner of your inputs. See the <a href="./m2-incremental.html">incremental page</a>.</p>
+</div>
+
+</main>
+
+<footer class="site">
+  <p>Monte Carlo slip rates, a teaching site by James La Greca, University of Melbourne.
+  The engine is checked against closed-form results on the <a href="./verify.html">verify page</a>.
+  Method provenance and reading are on the <a href="./references.html">references page</a>.</p>
+  <p><strong>Every teaching dataset on this site is synthetic.</strong>
+  Two presets carry digitised bracket values from published studies and are labelled as such.
+  No unpublished field measurement appears anywhere in this repository.</p>
+</footer>
+</div>
+
+<script type="module" src="./js/pages/m2-intervals.js"></script>
+</body>
+</html>

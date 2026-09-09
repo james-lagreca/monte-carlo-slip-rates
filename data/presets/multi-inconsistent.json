@@ -1,0 +1,77 @@
+{
+  "id": "multi-inconsistent",
+  "kind": "multi",
+  "synthetic": true,
+  "title": "Markers that overlap each other",
+  "teaches": "Ages spaced too closely relative to their errors. Acceptance falls, and the interval rates come back too wide to say anything with.",
+  "provenance": "Invented for teaching. Not a real site and not real measurements.",
+  "units": {
+    "age": "ka",
+    "displacement": "m",
+    "rate": "mm/yr"
+  },
+  "truth": null,
+  "anchor": null,
+  "markers": [
+    {
+      "id": "m1",
+      "label": "M1",
+      "displacement": {
+        "type": "pert",
+        "min": 4,
+        "mode": 4.8,
+        "max": 5.6
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 2.6,
+        "sd": 0.6
+      }
+    },
+    {
+      "id": "m2",
+      "label": "M2",
+      "displacement": {
+        "type": "pert",
+        "min": 7,
+        "mode": 9.5,
+        "max": 12
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 3.2,
+        "sd": 0.6
+      }
+    },
+    {
+      "id": "m3",
+      "label": "M3",
+      "displacement": {
+        "type": "pert",
+        "min": 11,
+        "mode": 14.6,
+        "max": 18
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 3.9,
+        "sd": 0.65
+      }
+    },
+    {
+      "id": "m4",
+      "label": "M4",
+      "displacement": {
+        "type": "pert",
+        "min": 17.5,
+        "mode": 22.4,
+        "max": 27
+      },
+      "age": {
+        "type": "gauss",
+        "mean": 4.6,
+        "sd": 0.7
+      }
+    }
+  ]
+}

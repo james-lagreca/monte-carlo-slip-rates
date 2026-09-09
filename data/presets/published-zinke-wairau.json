@@ -1,0 +1,143 @@
+{
+  "id": "published-zinke-wairau",
+  "kind": "multi",
+  "synthetic": false,
+  "title": "Zinke and others (2021), Wairau Fault, nine markers",
+  "teaches": "Nine dated markers on one fault. The interval rates vary by more than an order of magnitude, which is the phenomenon incremental analysis exists to measure.",
+  "provenance": "Displacement and age brackets after Zinke and others (2021), Tectonics, for the Wairau Fault, Aotearoa New Zealand. Digitised as minimum and maximum bounds and loaded here as uniform PDFs. The published analysis used fuller PDF shapes, so the rates computed on this page are illustrative recomputations, not reproductions of the published values.",
+  "units": {
+    "age": "ka",
+    "displacement": "m",
+    "rate": "mm/yr"
+  },
+  "truth": null,
+  "anchor": null,
+  "markers": [
+    {
+      "id": "m1",
+      "label": "M1",
+      "displacement": {
+        "type": "boxcar",
+        "min": 4,
+        "max": 6
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 1.9,
+        "max": 2.1
+      }
+    },
+    {
+      "id": "m2",
+      "label": "M2",
+      "displacement": {
+        "type": "boxcar",
+        "min": 13.5,
+        "max": 16.5
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 2.7,
+        "max": 3.2
+      }
+    },
+    {
+      "id": "m3",
+      "label": "M3",
+      "displacement": {
+        "type": "boxcar",
+        "min": 23,
+        "max": 27
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 3.2,
+        "max": 6
+      }
+    },
+    {
+      "id": "m4",
+      "label": "M4",
+      "displacement": {
+        "type": "boxcar",
+        "min": 25.2,
+        "max": 27.5
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 8.07,
+        "max": 9.12
+      }
+    },
+    {
+      "id": "m5",
+      "label": "M5",
+      "displacement": {
+        "type": "boxcar",
+        "min": 36.1,
+        "max": 40.2
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 8.5,
+        "max": 9.57
+      }
+    },
+    {
+      "id": "m6",
+      "label": "M6",
+      "displacement": {
+        "type": "boxcar",
+        "min": 36.7,
+        "max": 39.8
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 9.06,
+        "max": 10.14
+      }
+    },
+    {
+      "id": "m7",
+      "label": "M7",
+      "displacement": {
+        "type": "boxcar",
+        "min": 49.1,
+        "max": 53.6
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 9.52,
+        "max": 10.88
+      }
+    },
+    {
+      "id": "m8",
+      "label": "M8",
+      "displacement": {
+        "type": "boxcar",
+        "min": 52,
+        "max": 56
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 10.4,
+        "max": 11.8
+      }
+    },
+    {
+      "id": "m9",
+      "label": "M9",
+      "displacement": {
+        "type": "boxcar",
+        "min": 56.5,
+        "max": 60.5
+      },
+      "age": {
+        "type": "boxcar",
+        "min": 11.12,
+        "max": 12.83
+      }
+    }
+  ]
+}
