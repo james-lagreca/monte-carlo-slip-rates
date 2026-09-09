@@ -20,11 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Pages must already exist and be set to build from Actions. The default
+      # workflow token cannot create the site, so enablement is not attempted
+      # here: it fails confusingly. Enable it once in Settings, Pages.
       - uses: actions/configure-pages@v5
-        with:
-          # Configure Pages for Actions from here, so the deploy does not depend
-          # on the branch setting having been made by hand.
-          enablement: true
       # There is no build step. The repository root is the site, so the
       # artifact is uploaded as-is.
       - uses: actions/upload-pages-artifact@v3
