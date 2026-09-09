@@ -94,7 +94,7 @@ The incremental method is not original here. It builds on Gold and Cowgill
 [Zinke et al. 2019](https://doi.org/10.1029/2018GL080688)). The engine is a
 JavaScript port of the algorithm in Zinke's RISeR toolbox, whose documentation
 asks that users cite those two papers. Anchoring to the most recent event
-follows Hatem et al. (2024). Full details on the
+follows Hatem et al. Full details, including a note on that paper's year, on the
 [references page](references.html).
 
 ## Licence

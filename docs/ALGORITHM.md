@@ -136,7 +136,7 @@ per cent, observed 17.4 per cent.
 
     SR = D_m / (t_m − t_MRE)
 
-Following Hatem et al. (2024). Strain accumulates after the most recent event
+Following Hatem et al. Strain accumulates after the most recent event
 but no surface displacement is registered, so dividing by the marker's full age
 charges the rate for time in which nothing could have been recorded.
 
